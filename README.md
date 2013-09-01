@@ -1,4 +1,4 @@
 moon
 ====
 
-JavaScript animation framework that uses CSS3 trasitions
+JavaScript animation framework that uses CSS3 transitions
