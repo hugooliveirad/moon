@@ -10,12 +10,25 @@ module.exports = function(grunt) {
             },
             compile: {
                 files: {
-                    'lib/Moon.js': 'src/Moon.coffee',
+                    'lib/moon.js': 'src/Moon.coffee',
                     'demo/lib/app.js': ['src/Moon.coffee', 'demo/src/app.coffee']
+                }
+            }
+        },
+        uglify: {
+            options: {
+                mangle: false
+            },
+            my_target: {
+                files: {
+                    'lib/moon.min.js': ['lib/Moon.js']
                 }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-coffee');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+
+    grunt.registerTask('compile', ['coffee', 'uglify']);
 };

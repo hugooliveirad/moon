@@ -10,7 +10,7 @@ Moon.js is in it's early days and should not be used in production environment (
 If you want to test it, just download the minified version and include it anywhere on your website:
 
 ```html
-<script src="moon.min.js"></script>
+<script src="Moon.min.js"></script>
 ```
 
 ##What it is
@@ -50,6 +50,92 @@ Yes, it's this simple.
 ```
 
 In order to play a Moon.js animation, you must use `play()`. It is a function of Moon.pt just as `.animate()`. `play()` plays (Ohh!) the animations that were defined using `.animate()` and fires a callback function right at the end of everything.
+
+##Examples
+###Simple animation (fade out in 1 second with 500ms of delay):
+**CoffeeScript**
+```coffeescript
+Moon("#selector").animate
+    "opacity": "0"
+    "duration": 1000
+    "delay": 500
+.play()
+```
+**JavaScript**
+```javascript
+Moon("#selector").animate({
+    "opacity": "0",
+    "duration": 1000,
+    "delay": 500
+}).play();
+```
+
+###Chained animations (fade out in 1 second and fade in in 500ms):
+**CoffeeScript**
+```coffeescript
+Moon("#selector").animate
+    "opacity": "0"
+    "duration": 1000
+.animate
+    "opacity": "1"
+    "duration": 500
+.play()
+```
+
+**JavaScript**
+```javascript
+Moon("#selector").animate({
+    "opacity": "0",
+    "duration": 1000
+}).animate({
+    "opacity": "1",
+    "duration": 500
+}).play();
+```
+
+###Two elements animation (fade out):
+**CoffeeScript**
+```coffeescript
+# Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
+Moon(["#selector", document.querySelectorAll(".selector")]).animate
+    "opacity": "0"
+    "duration": 1000
+.play()
+```
+
+**JavaScript**
+```javascript
+// Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
+Moon(["#selector", document.querySelectorAll(".selector")]).animate({
+    "opacity": "0",
+    "duration": 1000
+}).play();
+```
+
+###Animation with callback:
+**CoffeeScript**
+```coffeescript
+Moon("#selector").animate
+    "opacity": "0"
+    "duration": 1000
+.play ->
+    console.log "callback function"
+```
+
+**JavaScript**
+```javascript
+Moon("#selector").animate({
+    "opacity": "0",
+    "duration": 1000
+}).play(function(){
+    console.log("callback function");
+});
+```
+
+##Go wild
+**Moon.js** gives you the power to create animations dynamically using JavaScript. Better than that, Moon.js uses CSS3 transitions to create smooth animations for modern webapps. These pre-release functions are simple, but you already have a lot of options on your hand.
+
+You can create animations that are called after other animations, animations that affects many elements, chained complex animations or even a GUI that chains animations and plays it when you want.
 
 ##Wrap-up
 
