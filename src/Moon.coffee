@@ -15,6 +15,7 @@ Moon.pt = Moon.prototype =
         Moon.pt._collection = Moon.pt.getMoonCollection(target)
         return Moon.pt
 
+    # returns the collection of HTMLElements or NodeList, that can be animated by Moon later
     getMoonCollection: (target) ->
         collection = []
         if target instanceof NodeList || target instanceof HTMLCollection
@@ -29,13 +30,19 @@ Moon.pt = Moon.prototype =
 
         return collection
 
+    # returns the prefix of a css style in "javascript" style. used mainly for css3
      getPrefix: (prop) ->
         prefixes = ["", "webkit", "moz", "ms", "O"]
+        indexOfDash = prop.indexOf("-")
+        while indexOfDash > -1
+            # the letter after the dash is capitalized
+            prop = prop.slice(0, indexOfDash) + prop.charAt(indexOfDash + 1).toUpperCase() + prop.slice(indexOfDash + 2)
+            indexOfDash = prop.indexOf("-")
         for pre in prefixes
             if pre != ""
                 prop = prop.charAt(0).toUpperCase() + prop.slice(1)
+
             if document.documentElement.style[pre + prop]?
-                console.log pre + prop
                 return pre + prop
 
     # defines a animation step. Moon animations must have at least one step
@@ -64,7 +71,7 @@ Moon.pt = Moon.prototype =
             for el in Moon.pt._collection
                 el.style[Moon.pt.getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
                 for key, value of anm
-                    if key == "duration" or key == "delay"
+                    if key == "duration" or key == "delay" or key == "easing"
                         continue
                     el.style[Moon.pt.getPrefix(key)] = value
                         

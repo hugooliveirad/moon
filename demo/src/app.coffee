@@ -10,6 +10,7 @@ Moon("#target")
     "height": "300px"
     "width": "200px"
     "transform": "scale(1.3)"
+    "background-color": "yellow"
     "duration": 1000
     "delay": 2000
 .play ->
