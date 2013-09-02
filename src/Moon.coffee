@@ -55,6 +55,8 @@ Moon.pt = Moon.prototype =
             duration: 0
             delay: 0
             easing: "ease"
+            beforeAnimation: undefined
+            afterAnimation: undefined
 
         for arg, value of args
             animationProps[arg] = value
@@ -72,6 +74,8 @@ Moon.pt = Moon.prototype =
         Moon.pt._step++
         anm = Moon.pt._stack[Moon.pt._step]
         if typeof anm != "undefined" and anm != null
+            # before animation function
+            anm.beforeAnimation() if typeof anm.beforeAnimation == "function"
             for el in Moon.pt._collection
                 el.style[Moon.pt.getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
                 for key, value of anm
@@ -80,6 +84,8 @@ Moon.pt = Moon.prototype =
                     el.style[Moon.pt.getPrefix(key)] = value
                         
             nextTimeout = setTimeout ->
+                # after animation function
+                anm.afterAnimation() if typeof anm.afterAnimation == "function"
                 Moon.pt._play()
                 clearTimeout(nextTimeout)
             , anm.delay + anm.duration

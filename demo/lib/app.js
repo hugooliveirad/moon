@@ -67,7 +67,9 @@ Moon.pt = Moon.prototype = {
     animationProps = {
       duration: 0,
       delay: 0,
-      easing: "ease"
+      easing: "ease",
+      beforeAnimation: void 0,
+      afterAnimation: void 0
     };
     for (arg in args) {
       value = args[arg];
@@ -85,6 +87,9 @@ Moon.pt = Moon.prototype = {
     Moon.pt._step++;
     anm = Moon.pt._stack[Moon.pt._step];
     if (typeof anm !== "undefined" && anm !== null) {
+      if (typeof anm.beforeAnimation === "function") {
+        anm.beforeAnimation();
+      }
       _ref = Moon.pt._collection;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         el = _ref[_i];
@@ -98,6 +103,9 @@ Moon.pt = Moon.prototype = {
         }
       }
       return nextTimeout = setTimeout(function() {
+        if (typeof anm.afterAnimation === "function") {
+          anm.afterAnimation();
+        }
         Moon.pt._play();
         return clearTimeout(nextTimeout);
       }, anm.delay + anm.duration);
@@ -115,7 +123,13 @@ Moon(["#target", document.querySelector("#target2")]).animate({
   "height": "500px",
   "width": "100px",
   "duration": 1000,
-  "delay": 100
+  "delay": 100,
+  "beforeAnimation": function() {
+    return console.log("beforeAnimation function running");
+  },
+  "afterAnimation": function() {
+    return console.log("afterAnimation function running");
+  }
 }).animate({
   "opacity": ".5",
   "height": "300px",
@@ -123,7 +137,13 @@ Moon(["#target", document.querySelector("#target2")]).animate({
   "transform": "scale(1.3)",
   "background-color": "yellow",
   "duration": 1000,
-  "delay": 2000
+  "delay": 2000,
+  "beforeAnimation": function() {
+    return console.log("beforeAnimation function running");
+  },
+  "afterAnimation": function() {
+    return console.log("afterAnimation function running");
+  }
 }).play(function() {
   return console.log('callback');
 });
