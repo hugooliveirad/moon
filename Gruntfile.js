@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             },
             compile: {
                 files: {
-                    'lib/Moon.js': 'src/Moon.coffee',
+                    'lib/moon.js': 'src/Moon.coffee',
                     'demo/lib/app.js': ['src/Moon.coffee', 'demo/src/app.coffee']
                 }
             }
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
             },
             my_target: {
                 files: {
-                    'lib/Moon.min.js': ['lib/Moon.js']
+                    'lib/moon.min.js': ['lib/Moon.js']
                 }
             }
         }
