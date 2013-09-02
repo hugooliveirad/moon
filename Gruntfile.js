@@ -14,8 +14,19 @@ module.exports = function(grunt) {
                     'demo/lib/app.js': ['src/Moon.coffee', 'demo/src/app.coffee']
                 }
             }
+        },
+        uglify: {
+            options: {
+                mangle: false
+            },
+            my_target: {
+                files: {
+                    'lib/Moon.min.js': ['lib/Moon.js']
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-coffee');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 };
