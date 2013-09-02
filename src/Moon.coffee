@@ -78,7 +78,7 @@ Moon.pt = Moon.prototype =
             nextTimeout = setTimeout ->
                 Moon.pt._play()
                 clearTimeout(nextTimeout)
-            , anm.delay + anm.duration
+            , anm.duration
 
         else
             Moon.pt._step = -1
