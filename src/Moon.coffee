@@ -15,7 +15,7 @@ Moon.pt = Moon.prototype =
         Moon.pt._collection = Moon.pt.getMoonCollection(target)
         return Moon.pt
 
-    # returns the collection of HTMLElements or NodeList, that can be animated by Moon later
+    # returns the collection of HTMLCollection or NodeList, that can be animated by Moon later
     getMoonCollection: (target) ->
         collection = []
         if target instanceof NodeList || target instanceof HTMLCollection
