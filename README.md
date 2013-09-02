@@ -51,6 +51,92 @@ Yes, it's this simple.
 
 In order to play a Moon.js animation, you must use `play()`. It is a function of Moon.pt just as `.animate()`. `play()` plays (Ohh!) the animations that were defined using `.animate()` and fires a callback function right at the end of everything.
 
+##Examples
+###Simple animation (fade out in 1 second with 500ms of delay):
+**CoffeeScript**
+```coffeescript
+Moon("#selector").animate
+    "opacity": "0"
+    "duration": 1000
+    "delay": 500
+.play()
+```
+**JavaScript**
+```javascript
+Moon("#selector").animate({
+    "opacity": "0",
+    "duration": 1000,
+    "delay": 500
+}).play();
+```
+
+###Chained animations (fade out in 1 second and fade in in 500ms):
+**CoffeeScript**
+```coffeescript
+Moon("#selector").animate
+    "opacity": "0"
+    "duration": 1000
+.animate
+    "opacity": "1"
+    "duration": 500
+.play()
+```
+
+**JavaScript**
+```javascript
+Moon("#selector").animate({
+    "opacity": "0",
+    "duration": 1000
+}).animate({
+    "opacity": "1",
+    "duration": 500
+}).play();
+```
+
+###Two elements animation (fade out):
+**CoffeeScript**
+```coffeescript
+# Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
+Moon(["#selector", document.querySelectorAll(".selector")]).animate
+    "opacity": "0"
+    "duration": 1000
+.play()
+```
+
+**JavaScript**
+```javascript
+// Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
+Moon(["#selector", document.querySelectorAll(".selector")]).animate({
+    "opacity": "0",
+    "duration": 1000
+}).play();
+```
+
+###Animation with callback:
+**CoffeeScript**
+```coffeescript
+Moon("#selector").animate
+    "opacity": "0"
+    "duration": 1000
+.play ->
+    console.log "callback function"
+```
+
+**JavaScript**
+```javascript
+Moon("#selector").animate({
+    "opacity": "0",
+    "duration": 1000
+}).play(function(){
+    console.log("callback function");
+});
+```
+
+##Go wild
+**Moon.js** gives you the power to create animations dynamically using JavaScript. Better than that, Moon.js uses CSS3 transitions to create smooth animations for modern webapps. These pre-release functions are simple, but you already have a lot of options on your hand.
+
+You can create animations that are called after other animations, animations that affects many elements, chained complex animations or even a GUI that chains animations and plays it when you want.
+
 ##Wrap-up
 
 For now, I'll improve these main functions to deploy a v0.1 as soon as possible. Feel free to send pull requests with improvements to existing code or fill issues with feature requests. To maintain my sanity, please do not report bugs yet. You know, I just started this thing. When a pre-release version shows up, I will be happy if you send bug reports and even unit tests to ensure it will never happen again.
