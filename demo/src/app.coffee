@@ -1,4 +1,4 @@
-Moon("#target")
+Moon(["#target", document.querySelector("#target2")])
 .animate
     "opacity": "1"
     "height": "500px"

@@ -18,15 +18,19 @@ Moon.pt = Moon.prototype =
     # returns the collection of HTMLCollection or NodeList, that can be animated by Moon later
     getMoonCollection: (target) ->
         collection = []
-        if target instanceof NodeList || target instanceof HTMLCollection
-            collection.push el for el in target
-        else if typeof target == "string"
-            selectedElements = document.querySelectorAll(target)
-            collection.push el for el in selectedElements
-        else if !(target instanceof Array)
+        unless target instanceof Array
             collection.push target
         else
-            collection = target
+            for tgt in target
+                if tgt instanceof NodeList || tgt instanceof HTMLCollection
+                    collection.push el for el in target
+                else if typeof tgt == "string"
+                    selectedElements = document.querySelectorAll(tgt)
+                    collection.push el for el in selectedElements
+                else if !(tgt instanceof Array)
+                    collection.push tgt
+                else
+                    collection.push el for el in tgt
 
         return collection
 
