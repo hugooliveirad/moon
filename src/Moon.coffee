@@ -18,19 +18,20 @@ Moon.pt = Moon.prototype =
     # returns the collection of HTMLCollection or NodeList, that can be animated by Moon later
     getMoonCollection: (target) ->
         collection = []
-        unless target instanceof Array
-            collection.push target
-        else
-            for tgt in target
-                if tgt instanceof NodeList || tgt instanceof HTMLCollection
-                    collection.push el for el in target
-                else if typeof tgt == "string"
-                    selectedElements = document.querySelectorAll(tgt)
-                    collection.push el for el in selectedElements
-                else if !(tgt instanceof Array)
-                    collection.push tgt
-                else
-                    collection.push el for el in tgt
+        if !(target instanceof Array)
+            aux = target
+            target = []
+            target.push aux
+        for tgt in target
+            if tgt instanceof NodeList || tgt instanceof HTMLCollection
+                collection.push el for el in tgt
+            else if typeof tgt == "string"
+                selectedElements = document.querySelectorAll(tgt)
+                collection.push el for el in selectedElements
+            else if !(tgt instanceof Array)
+                collection.push tgt
+            else
+                collection.push el for el in tgt
 
         return collection
 
@@ -55,6 +56,8 @@ Moon.pt = Moon.prototype =
             duration: 0
             delay: 0
             easing: "ease"
+            beforeAnimation: undefined
+            afterAnimation: undefined
 
         for arg, value of args
             animationProps[arg] = value
@@ -66,12 +69,15 @@ Moon.pt = Moon.prototype =
     play: (callback) ->
         Moon.pt._callback = callback
         Moon.pt._play()
+        return Moon.pt
 
     # "private" play function
     _play: ->
         Moon.pt._step++
         anm = Moon.pt._stack[Moon.pt._step]
         if typeof anm != "undefined" and anm != null
+            # before animation function
+            anm.beforeAnimation() if typeof anm.beforeAnimation == "function"
             for el in Moon.pt._collection
                 el.style[Moon.pt.getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
                 for key, value of anm
@@ -80,6 +86,8 @@ Moon.pt = Moon.prototype =
                     el.style[Moon.pt.getPrefix(key)] = value
                         
             nextTimeout = setTimeout ->
+                # after animation function
+                anm.afterAnimation() if typeof anm.afterAnimation == "function"
                 Moon.pt._play()
                 clearTimeout(nextTimeout)
             , anm.delay + anm.duration
