@@ -10,7 +10,7 @@ Moon.js is in it's early days and should not be used in production environment (
 If you want to test it, just download the minified version and include it anywhere on your website:
 
 ```html
-<script src="Moon.min.js"></script>
+<script src="moon.min.js"></script>
 ```
 
 ##What it is
