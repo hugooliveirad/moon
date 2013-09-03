@@ -14,31 +14,32 @@ Moon.pt = Moon.prototype = {
     return Moon.pt;
   },
   getMoonCollection: function(target) {
-    var collection, el, selectedElements, tgt, _i, _j, _k, _l, _len, _len1, _len2, _len3;
+    var aux, collection, el, selectedElements, tgt, _i, _j, _k, _l, _len, _len1, _len2, _len3;
     collection = [];
     if (!(target instanceof Array)) {
-      collection.push(target);
-    } else {
-      for (_i = 0, _len = target.length; _i < _len; _i++) {
-        tgt = target[_i];
-        if (tgt instanceof NodeList || tgt instanceof HTMLCollection) {
-          for (_j = 0, _len1 = target.length; _j < _len1; _j++) {
-            el = target[_j];
-            collection.push(el);
-          }
-        } else if (typeof tgt === "string") {
-          selectedElements = document.querySelectorAll(tgt);
-          for (_k = 0, _len2 = selectedElements.length; _k < _len2; _k++) {
-            el = selectedElements[_k];
-            collection.push(el);
-          }
-        } else if (!(tgt instanceof Array)) {
-          collection.push(tgt);
-        } else {
-          for (_l = 0, _len3 = tgt.length; _l < _len3; _l++) {
-            el = tgt[_l];
-            collection.push(el);
-          }
+      aux = target;
+      target = [];
+      target.push(aux);
+    }
+    for (_i = 0, _len = target.length; _i < _len; _i++) {
+      tgt = target[_i];
+      if (tgt instanceof NodeList || tgt instanceof HTMLCollection) {
+        for (_j = 0, _len1 = tgt.length; _j < _len1; _j++) {
+          el = tgt[_j];
+          collection.push(el);
+        }
+      } else if (typeof tgt === "string") {
+        selectedElements = document.querySelectorAll(tgt);
+        for (_k = 0, _len2 = selectedElements.length; _k < _len2; _k++) {
+          el = selectedElements[_k];
+          collection.push(el);
+        }
+      } else if (!(tgt instanceof Array)) {
+        collection.push(tgt);
+      } else {
+        for (_l = 0, _len3 = tgt.length; _l < _len3; _l++) {
+          el = tgt[_l];
+          collection.push(el);
         }
       }
     }
@@ -80,7 +81,8 @@ Moon.pt = Moon.prototype = {
   },
   play: function(callback) {
     Moon.pt._callback = callback;
-    return Moon.pt._play();
+    Moon.pt._play();
+    return Moon.pt;
   },
   _play: function() {
     var anm, el, key, nextTimeout, value, _i, _len, _ref;
