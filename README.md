@@ -132,10 +132,65 @@ Moon("#selector").animate({
 });
 ```
 
+###Animation with before, after and callback calls
+**CoffeeScript**
+```coffeescript
+Moon("#selector").animate
+    "opacity": "0"
+    "duration": 1000
+    "beforeAnimation": (moon) ->
+        console.log "First animation is playing"
+    "afterAnimation": (moon) ->
+        console.log "First animation stopped"
+.animate
+    "opacity": "1"
+    "duration": 1000
+    "beforeAnimation": (moon) ->
+        console.log "Second animation is playing"
+    "afterAnimation": (moon) ->
+        console.log "Second animation stopped"
+.play (moon) ->
+    console.log "Everything ended"
+```
+
+**JavaScript**
+```javascript
+Moon("#selector").animate({
+    "opacity": "0",
+    "duration": 1000,
+    "beforeAnimation": function () {
+        console.log("First animation is playing");
+    }
+    "afterAnimation": function () {
+        console.log("Second animation stopped");
+    }
+}).animate({
+    "opacity": "1"
+    "duration": 1000
+    "beforeAnimation": function () {
+        console.log("Second animation is playing");
+    }
+    "afterAnimation": function () {
+        console.log("Second animation stopped");
+    }
+}).play(function () {
+    console.log("Everything ended");
+});
+```
+    
+
 ##Go wild
 **Moon.js** gives you the power to create animations dynamically using JavaScript. Better than that, Moon.js uses CSS3 transitions to create smooth animations for modern webapps. These pre-release functions are simple, but you already have a lot of options on your hand.
 
 You can create animations that are called after other animations, animations that affects many elements, chained complex animations or even a GUI that chains animations and plays it when you want.
+
+## Contributing
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request :D
 
 ##Wrap-up
 
