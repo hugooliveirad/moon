@@ -138,18 +138,18 @@ Moon("#selector").animate({
 Moon("#selector").animate
     "opacity": "0"
     "duration": 1000
-    "beforeAnimation": ->
+    "beforeAnimation": (moon) ->
         console.log "First animation is playing"
-    "afterAnimation": ->
+    "afterAnimation": (moon) ->
         console.log "First animation stopped"
 .animate
     "opacity": "1"
     "duration": 1000
-    "beforeAnimation": ->
+    "beforeAnimation": (moon) ->
         console.log "Second animation is playing"
-    "afterAnimation": ->
+    "afterAnimation": (moon) ->
         console.log "Second animation stopped"
-.play ->
+.play (moon) ->
     console.log "Everything ended"
 ```
 
