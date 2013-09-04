@@ -140,15 +140,19 @@ test("Moon()._collection behavior tests", function() {
 });
 
 test("Callback, before and after functions", function() {
-  return Moon("#target").animate({
+  var moonObj;
+  return moonObj = Moon("#target").animate({
     "opacity": "0",
-    "beforeAnimation": function() {
-      return ok(1 === 1, "Before animation was called");
+    "beforeAnimation": function(moon) {
+      ok(1 === 1, "Before animation was called");
+      return ok(moon === moonObj, "Expected Moon.pt object to be passed as an argument");
     },
-    "afterAnimation": function() {
-      return ok(1 === 1, "After animation was called");
+    "afterAnimation": function(moon) {
+      ok(1 === 1, "After animation was called");
+      return ok(moon === moonObj, "Expected Moon.pt object to be passed as an argument");
     }
-  }).play(function() {
-    return ok(1 === 1, "Callback on the end of all animations was called");
+  }).play(function(moon) {
+    ok(1 === 1, "Callback on the end of all animations was called");
+    return ok(moon === moonObj, "Expected Moon.pt object to be passed as an argument");
   });
 });

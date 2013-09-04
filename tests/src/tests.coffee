@@ -12,11 +12,14 @@ test "Moon()._collection behavior tests", ->
     ok(Moon(document.getElementById("targets-wrapper").querySelectorAll("div"))._collection.length == 2, "selectors must can be used isolated and returns every selected element")
 
 test "Callback, before and after functions", ->
-	Moon("#target").animate
+	moonObj = Moon("#target").animate
 		"opacity": "0"
-		"beforeAnimation": ->
+		"beforeAnimation": (moon) ->
 			ok(1 == 1, "Before animation was called")
-		"afterAnimation": ->
+			ok(moon == moonObj, "Expected Moon.pt object to be passed as an argument")
+		"afterAnimation": (moon) ->
 			ok(1 == 1, "After animation was called")
-	.play ->
+			ok(moon == moonObj, "Expected Moon.pt object to be passed as an argument")
+	.play (moon) ->
 		ok(1 == 1, "Callback on the end of all animations was called")
+		ok(moon ==  moonObj, "Expected Moon.pt object to be passed as an argument")
