@@ -1,25 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Moon.js test</title>
-    <style type="text/css">
-        #target{
-            width: 300px;
-            height: 300px;
-            margin: 20px auto;
-            background-color: #FA6900;
-        }
-        #target2{
-            width: 200px;
-            height: 200px;
-            background: red;
-            margin: 20px auto
-        }
-    </style>
+    <title>Moon :: JavaScript animation framework</title>
+    <meta charset="utf-8">
+    <meta name="description" content="The demo page of the Moon animation framework">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/vendors/solarized_dark.css">
+    <script src="lib/vendors/highlight.pack.js"></script>
 </head>
 <body>
-    <div id="target"></div>
-    <div id="target2"></div>
+    <header class="c-header">
+        <hgroup>
+            <h1 class="c-header--title">Moon</h1>
+            <h2 class="c-header--subtitle">A JavaScript animation framework</h2>    
+        </hgroup>
+        <nav class="c-header--navigation">
+            <a href="https://github.com/hugobessaa/moon">
+                <li>GitHub</li>
+            </a>
+        </nav>
+    </header>
+    <section class="board">
+        <select name="animationSelector" id="animationSelector" class="board--animation-selector">
+            <option value="0">Simple</option>
+            <option value="1">Chained</option>
+            <option value="2">Two elements</option>
+            <option value="3">Callback</option>
+            <option value="4">After and before animation</option>
+        </select>
+        <div class="board--animations-wrapper">
+            <!-- Simple -->
+            <div class="animation-item">
+                <div class="target"></div>
+            </div>
+            <!-- Chained -->
+            <div class="animation-item">
+                <div class="target"></div>
+            </div>
+            <!-- Two elements -->
+            <div class="animation-item">
+                <div class="target"></div>
+                <div class="target"></div>
+            </div>
+            <!-- Callback -->
+            <div class="animation-item">
+                <div class="target"></div>
+                <div class="target"></div>
+            </div>
+            <!-- After and before animation -->
+            <div class="animation-item">
+                <div class="target"></div>
+                <div class="target"></div>
+            </div>
+        </div>
+        <div class="boar--code-wrapper">
+            
+        </div>
+    </section>
     <script type="text/javascript" src="lib/app.js"></script>
 </body>
 </html>
