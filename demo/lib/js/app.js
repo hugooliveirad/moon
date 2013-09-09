@@ -1,4 +1,4 @@
-var Moon;
+var App, Moon;
 
 Moon = function(target, args) {
   return new Moon.pt.init(target, args);
@@ -120,32 +120,75 @@ Moon.pt = Moon.prototype = {
   }
 };
 
-Moon(["#target", document.querySelector("#target2")]).animate({
-  "opacity": "1",
-  "height": "500px",
-  "width": "100px",
-  "duration": 1000,
-  "delay": 100,
-  "beforeAnimation": function() {
-    return console.log("beforeAnimation function running");
+App = {
+  init: function() {
+    var a;
+    a = App;
+    a.animationWrapper = document.getElementById("animationWrapper");
+    a.animationSelect = document.getElementById('animationSelector');
+    a.animationSelect.addEventListener('change', function(e) {
+      return a.controllers.activateAnimation(this.value);
+    });
+    return a.controllers.cleanAnimations();
   },
-  "afterAnimation": function() {
-    return console.log("afterAnimation function running");
+  controllers: {
+    activateAnimation: function(index) {
+      var a, tgt;
+      a = App;
+      index = parseInt(index, 10);
+      a.controllers.cleanAnimations();
+      switch (index) {
+        case 0:
+          tgt = a.controllers.createTargets(1);
+          return setTimeout(function() {
+            return Moon(tgt).animate({
+              "transform": "scale(1.2) rotate(180deg)",
+              "duration": 1500
+            }).play();
+          }, 500);
+        case 1:
+          tgt = a.controllers.createTargets(1);
+          return setTimeout(function() {
+            return Moon(tgt).animate({
+              "transform": "scale(1.2) rotate(180deg)",
+              "duration": 1500
+            }).animate({
+              "transform": "translate3d(-100px, 0, 0) scale(0.8)",
+              "duration": 1500
+            }).animate({
+              "transform": "translate3d(300px, 0, 0) rotate(30deg)",
+              "duration": 1500
+            }).animate({
+              "transform": "translate3d(0,0,0)",
+              "duration": 1500
+            }).play();
+          }, 500);
+      }
+    },
+    cleanAnimations: function() {
+      var a, _results;
+      a = App;
+      _results = [];
+      while (a.animationWrapper.firstChild) {
+        _results.push(a.animationWrapper.removeChild(a.animationWrapper.firstChild));
+      }
+      return _results;
+    },
+    createTargets: function(num) {
+      var a, i, tgt, tgtFrag, tgtsCreated, _i;
+      a = App;
+      tgtsCreated = [];
+      tgtFrag = document.createDocumentFragment();
+      for (i = _i = 1; 1 <= num ? _i <= num : _i >= num; i = 1 <= num ? ++_i : --_i) {
+        tgt = document.createElement('div');
+        tgt.classList.add('target');
+        tgtFrag.appendChild(tgt);
+        tgtsCreated.push(tgt);
+      }
+      a.animationWrapper.appendChild(tgtFrag);
+      return tgtsCreated;
+    }
   }
-}).animate({
-  "opacity": ".5",
-  "height": "300px",
-  "width": "200px",
-  "transform": "scale(1.3)",
-  "background-color": "yellow",
-  "duration": 1000,
-  "delay": 2000,
-  "beforeAnimation": function() {
-    return console.log("beforeAnimation function running");
-  },
-  "afterAnimation": function() {
-    return console.log("afterAnimation function running");
-  }
-}).play(function() {
-  return console.log('callback');
-});
+};
+
+window.onload = App.init;
