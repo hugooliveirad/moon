@@ -20,7 +20,6 @@ module.exports = function(grunt) {
                 options: {
                    style: 'expanded',
                    sourcemap: true,
-                   compass: true
                 },
                 files: {
                     'demo/lib/css/main.css': 'demo/src/scss/main.scss',
@@ -39,7 +38,7 @@ module.exports = function(grunt) {
 		},
 		qunit: {
 			all: ['tests/**/*.html']
-		}
+		},
         watch: {
             scripts: {
                 files: ['**/*.coffee'],

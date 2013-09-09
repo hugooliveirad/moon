@@ -95,4 +95,3 @@ Moon.pt = Moon.prototype =
         else
             Moon.pt._step = -1
             Moon.pt._callback() if Moon.pt._callback?
-        
