@@ -11,7 +11,8 @@ module.exports = function(grunt) {
                 files: {
                     'lib/moon.js': 'src/Moon.coffee',
                     'demo/lib/js/app.js': ['src/Moon.coffee', 'demo/src/coffee/app.coffee'],
-					'tests/lib/tests.js': ['src/Moon.coffee', 'tests/src/tests.coffee']
+					'tests/lib/tests.js': ['src/Moon.coffee', 'tests/src/tests.coffee'],
+                    'devtest/js/devtest.js' : ['devtest/coffee/devtest.coffee']
                 }
             }
         },
