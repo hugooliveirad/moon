@@ -1,0 +1,16 @@
+{
+  "name": "moon",
+  "version": "0.0.5",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hugobessaa/moon"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-sass": "~0.5.0",
+    "grunt-contrib-uglify": "~0.2.4",
+    "grunt-contrib-qunit": "~0.3.0",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}
