@@ -19,8 +19,7 @@ module.exports = function(grunt) {
          sass: {
             compile: {
                 options: {
-                   style: 'expanded',
-                   sourcemap: true,
+                   style: 'expanded'
                 },
                 files: {
                     'demo/lib/css/main.css': 'demo/src/scss/main.scss',
