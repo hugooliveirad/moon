@@ -1,25 +1,23 @@
 do (window, document) ->
     # Main object of MoonJS
     Moon = (target, args) ->
-        self = this
         # this function acts like a 'enhanced' init
-        if window == self
+        if window == this
             return new Moon(target, args)
 
         # Moon collection
-        self._collection = Moon.fn.getMoonCollection(target)
+        this._collection = Moon.fn.getMoonCollection(target)
 
         # Moon variables to control animation
-        self._callback = undefined
-        self._stack = []
-        self._step = -1
-        self._prefixes = {}
+        this._callback = undefined
+        this._stack = []
+        this._step = -1
+        this._prefixes = {}
 
-        # init with the basic prefix
-        self._prefixes["transition"] = Moon.fn.getPrefix("transition")
-        return self
+        return this
 
     Moon.fn = Moon.prototype =
+        _prefixes: {}
         # returns the collection of HTMLCollection or NodeList, that can be animated by Moon later
         getMoonCollection: (target) ->
             collection = []
@@ -42,21 +40,33 @@ do (window, document) ->
 
         # returns the prefix of a css style in "javascript" style. Used mainly for css3
         getPrefix: (prop) ->
+
+            # check if Moon already tried to get this prefix
+            if Moon.fn._prefixes[prop]?
+                return Moon.fn._prefixes[prop]
+
+            # if not, continue the search for it
             prefixes = ["webkit", "moz", "ms", "O"]
+
             indexOfDash = prop.indexOf("-")
             while indexOfDash > -1
+
                 # the letter after the dash is capitalized
                 prop = prop.slice(0, indexOfDash) + prop.charAt(indexOfDash + 1).toUpperCase() + prop.slice(indexOfDash + 2)
                 indexOfDash = prop.indexOf("-")
 
+            # is the propertie avaiable without prefix?
             if document.documentElement.style[prop]?
+                Moon.fn._prefixes[prop] = prop
                 return prop
 
+            # if not, try to find the prefix
+            propCap = Moon.fn.cap(prop)
             for pre in prefixes
-                propertie = pre + Moon.fn.cap(prop)
+                propertie = pre + propCap
                 if document.documentElement.style[propertie]?
+                    Moon.fn._prefixes[prop] = propertie
                     return propertie
-            
 
         # capitalizes the first letter
         cap: (str) ->
@@ -64,7 +74,6 @@ do (window, document) ->
 
         # defines an animation step. Moon animations must have at least one step
         animate: (args) ->
-            self = this
             animationProps =
                 duration: 0
                 delay: 0
@@ -75,53 +84,52 @@ do (window, document) ->
             for arg, value of args
                 animationProps[arg] = value
 
-            self._stack.push(animationProps)
-            return self
+            this._stack.push(animationProps)
+            return this
 
         # play the animation and sets the end callback
         play: (callback) ->
-            self = this
-            self._callback = callback
-            self._play()
-            return self
+            this._callback = callback
+            this._play()
+            return this
 
-        # "private" play function for intern use
+        # play function for intern use
         _play: ->
-            self = this
-            self._step++
-            anm = self._stack[self._step]
+            this._step++
+            anm = this._stack[this._step]
             if anm?
                 # before animation function
                 anm.beforeAnimation() if typeof anm.beforeAnimation == "function"
 
                 # apply animation for each element
-                for el in self._collection
-                    el.style[self.getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
+                for el in this._collection
+                    el.style[this.getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
 
                     for key, value of anm
                         if key == "duration" || key == "delay" || key == "easing" || key == "beforeAnimation" || key == "afterAnimation"
                             continue
-                        el.style[self.getPrefix(key)] = value
+                        el.style[this.getPrefix(key)] = value
                             
                 nextTimeout = setTimeout ->
                     # after animation function
                     anm.afterAnimation() if typeof anm.afterAnimation == "function"
 
                     # continue chained animations
-                    self._play()
+                    this._play()
 
                     clearTimeout(nextTimeout)
                 , anm.delay + anm.duration
 
             # no more stacked animations
             else
-                self._callback() if self._callback?
+                this._callback() if this._callback?
+                this.reset()
+            return this
 
-                # reset Moon animation
-                self._callback = undefined
-                self._step = -1
-                self._stack = []
-
-            return self
+        # reset Moon animation
+        reset: ->
+            this._callback = undefined
+            this._step = -1
+            this._stack = []
 
     window.Moon = Moon
