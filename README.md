@@ -43,13 +43,27 @@ Moon("#selector").animate().animate()
 
 Yes, it's this simple.
 
+###loop()
+
+```javascript
+.loop(1) // <--- could be any int
+//or
+.loop("infinite")
+//or
+.loop("alternate")
+```
+
+So you want to loop your animations? Just use the `loop()` method to set the loops as you want. You can pass an `integer` as the number of times the animation will repeat, or `"infinite"` or `"alternate"`. Use with no moderation.
+
 ###play()
 
 ```javascript
 .play(callback);
 ```
 
-In order to play a Moon.js animation, you must use `play()`. It is a function of Moon.pt just as `.animate()`. `play()` plays (Ohh!) the animations that were defined using `.animate()` and fires a callback function right at the end of everything.
+In order to play a Moon.js animation, you must use `play()`. `play()` plays (Ohh!) the animations that were defined using `.animate()` and fires a callback function right at the end of everything.
+
+The callback function will be fired at the end of each loop if you are looping with `"infinite"` or `"alternate"`.
 
 ##Examples
 ###Simple animation (fade out in 1 second with 500ms of delay):
