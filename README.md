@@ -63,6 +63,14 @@ The callback function will be fired at the end of each loop if you are looping w
 
 *We believe it's better to have a `play()` method instead of playing the animation right after calling the `animate()` method. With Moon, you can build your entire animation before playing it.*
 
+###reset()
+
+```javascript
+.reset();
+```
+
+Reset any animation or configuration done to a Moon object. Great if you want to start another animation with the same objects.
+
 ##Examples
 ###Simple animation (fade out in 1 second with 500ms of delay):
 
