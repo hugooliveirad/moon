@@ -65,15 +65,7 @@ The callback function will be fired at the end of each loop if you are looping w
 
 ##Examples
 ###Simple animation (fade out in 1 second with 500ms of delay):
-**CoffeeScript**
-```coffeescript
-Moon("#selector").animate
-    "opacity": "0"
-    "duration": 1000
-    "delay": 500
-.play()
-```
-**JavaScript**
+
 ```javascript
 Moon("#selector").animate({
     "opacity": "0",
@@ -83,18 +75,7 @@ Moon("#selector").animate({
 ```
 
 ###Chained animations (fade out in 1 second and fade in in 500ms):
-**CoffeeScript**
-```coffeescript
-Moon("#selector").animate
-    "opacity": "0"
-    "duration": 1000
-.animate
-    "opacity": "1"
-    "duration": 500
-.play()
-```
 
-**JavaScript**
 ```javascript
 Moon("#selector").animate({
     "opacity": "0",
@@ -106,16 +87,7 @@ Moon("#selector").animate({
 ```
 
 ###Two elements animation (fade out):
-**CoffeeScript**
-```coffeescript
-# Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
-Moon(["#selector", document.querySelectorAll(".selector")]).animate
-    "opacity": "0"
-    "duration": 1000
-.play()
-```
 
-**JavaScript**
 ```javascript
 // Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
 Moon(["#selector", document.querySelectorAll(".selector")]).animate({
@@ -125,16 +97,7 @@ Moon(["#selector", document.querySelectorAll(".selector")]).animate({
 ```
 
 ###Animation with callback:
-**CoffeeScript**
-```coffeescript
-Moon("#selector").animate
-    "opacity": "0"
-    "duration": 1000
-.play ->
-    console.log "callback function"
-```
 
-**JavaScript**
 ```javascript
 Moon("#selector").animate({
     "opacity": "0",
@@ -145,27 +108,7 @@ Moon("#selector").animate({
 ```
 
 ###Animation with before, after and callback calls
-**CoffeeScript**
-```coffeescript
-Moon("#selector").animate
-    "opacity": "0"
-    "duration": 1000
-    "beforeAnimation": (moon) ->
-        console.log "First animation is playing"
-    "afterAnimation": (moon) ->
-        console.log "First animation stopped"
-.animate
-    "opacity": "1"
-    "duration": 1000
-    "beforeAnimation": (moon) ->
-        console.log "Second animation is playing"
-    "afterAnimation": (moon) ->
-        console.log "Second animation stopped"
-.play (moon) ->
-    console.log "Everything ended"
-```
 
-**JavaScript**
 ```javascript
 Moon("#selector").animate({
     "opacity": "0",
