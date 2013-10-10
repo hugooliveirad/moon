@@ -131,7 +131,6 @@ do (window, document) ->
 
             # no more stacked animations
             else
-                this._callback() if this._callback?
                 this._step = -1
 
                 # loopings that are numbers are finite
@@ -140,10 +139,13 @@ do (window, document) ->
                     if this._loop > 0
                         this._play()
                     else
+                        this._callback() if this._callback?
                         this.reset()
 
                 # strings are infinite
                 else if typeof this._loop == "string"
+                    this._callback() if this._callback?
+                    
                     if this._loop == "alternate"
                         this._direction = !this._direction
                         this._play()
