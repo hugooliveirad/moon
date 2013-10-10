@@ -10,17 +10,14 @@ module.exports = function(grunt) {
             compile: {
                 files: {
                     'lib/moon.js': 'src/Moon.coffee',
-                    'demo/lib/js/app.js': ['src/Moon.coffee', 'demo/src/coffee/app.coffee'],
-					'tests/lib/tests.js': ['src/Moon.coffee', 'tests/src/tests.coffee'],
-                    'devtest/js/devtest.js' : ['devtest/coffee/devtest.coffee']
+                    'demo/lib/js/app.js': ['src/Moon.coffee', 'demo/src/coffee/app.coffee']
                 }
             }
         },
          sass: {
             compile: {
                 options: {
-                   style: 'expanded',
-                   sourcemap: true,
+                   style: 'expanded'
                 },
                 files: {
                     'demo/lib/css/main.css': 'demo/src/scss/main.scss',

@@ -56,7 +56,24 @@ body{
             width: 200px;
             height: 200px;
             background: blue;
-            margin: 0 auto;
+            margin: 20px auto;
+
+            &.mini{
+                width: 10px;
+                height: 10px;
+                display: inline-block;
+                margin: 10px 2px;
+
+                &:nth-child(2n){
+                    background: red;
+                }
+                &:nth-child(2n + 1){
+                    background: yellow;
+                }
+                &:nth-child(2n + 2){
+                    background: orange;
+                }
+            }
         }
     }
 }
