@@ -150,6 +150,12 @@ do (window, document) ->
 
             return this
 
+        # sets properties without animating
+        set: (args) ->
+            for el in this._collection
+                for key, value of args
+                    el.style[this.getPrefix(key)] = value
+
         # set loop
         loop: (looping) ->
             this._loop = looping
