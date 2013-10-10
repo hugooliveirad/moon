@@ -1,7 +1,7 @@
 Moon.js
 ====
 
-Powerful JavaScript animation framework that uses CSS3 transitions
+> Powerful JavaScript animation framework that uses CSS3 transitions
 
 ##Why not to use it yet
 
@@ -15,7 +15,7 @@ If you want to test it, just download the minified version and include it anywhe
 
 ##What it is
 
-You already know that Moon.js wants to be as simple as possible. To achieve this goal, we need to make the hard work transparent to the user. No new strange conventions or strange function names. Want to set an animation? `Moon("#selector").animate()`. Want to play the animation? Just use `.play()`.
+You already know that Moon.js wants to be as simple as possible. To achieve this goal, we need to make the hard work transparent to the user. No new strange conventions or strange method names. Want to set an animation? `Moon("#selector").animate()`. Want to play the animation? Just use `.play()`.
 
 But sometimes you need horse power to bring to reality that crazy animation idea. Moon.js wants to give you this power the easiest way possible, the better way possible. If you want it too, help us bring this dream (and your dream) to reality by contributing with tips and coffee code.
 
@@ -24,9 +24,9 @@ But sometimes you need horse power to bring to reality that crazy animation idea
 
 ###Moon()
 ```javascript
-Moon(["#selector" | HTMLCollection | NodeList]);
+Moon("#selector" | HTMLCollection | NodeList);
 ```
-`Moon()` function is the main function of Moon.js. It accepts an array of CSS selectors, HTMLCollections or NodeLists and returns an Moon instance (internally named Moon.pt). What you can do with it? Animate everything, of course! How? Take a look:
+`Moon()` function is the main function of Moon.js. It accepts an array of CSS selectors, HTMLCollections or NodeLists and returns an Moon object. This magical object has some prototyped methods. What you can do with it? Animate everything, of course! How? Take a look:
 
 ###animate()
 
@@ -34,11 +34,11 @@ Moon(["#selector" | HTMLCollection | NodeList]);
 .animate({"propertie": "value"});
 ```
 
-The `animate()` function is a function of Moon.pt, and works with any Moon instance. To use it, you just have to pass the properties you want to change as a JavaScript object. You can than use `"duration": 1000`, `"delay": 500` (in milliseconds) and `"easing": "ease"` to change the behavior of your animation.
+The `animate()` works with any Moon object. To use it, you just have to pass the properties you want to change as a JavaScript object. You can than use `"duration": 1000`, `"delay": 500` (in milliseconds) and `"easing": "ease"` to change the behavior of your animation.
 
 To create chained animations, just use:
 ```javascript
-Moon("#selector").animate().animate()
+Moon("#selector").animate().animate();
 ```
 
 Yes, it's this simple.
@@ -46,14 +46,10 @@ Yes, it's this simple.
 ###loop()
 
 ```javascript
-.loop(1) // <--- could be any int
-//or
-.loop("infinite")
-//or
-.loop("alternate")
+.loop(2 | "infinite" | "alternate");
 ```
 
-So you want to loop your animations? Just use the `loop()` method to set the loops as you want. You can pass an `integer` as the number of times the animation will repeat, or `"infinite"` or `"alternate"`. Use with no moderation.
+So you want to loop your animations? Just use the `loop()` method to set the loops as you want. You can pass an `integer` as the number of times the animation will repeat or `"infinite"` or `"alternate"`. Use without moderation.
 
 ###play()
 
@@ -64,6 +60,8 @@ So you want to loop your animations? Just use the `loop()` method to set the loo
 In order to play a Moon.js animation, you must use `play()`. `play()` plays (Ohh!) the animations that were defined using `.animate()` and fires a callback function right at the end of everything.
 
 The callback function will be fired at the end of each loop if you are looping with `"infinite"` or `"alternate"`.
+
+*We believe it's better to have a `play()` method instead of playing the animation right after calling the `animate()` method. With Moon, you can build your entire animation before playing it.*
 
 ##Examples
 ###Simple animation (fade out in 1 second with 500ms of delay):
@@ -196,7 +194,7 @@ Moon("#selector").animate({
 ##Go wild
 **Moon.js** gives you the power to create animations dynamically using JavaScript. Better than that, Moon.js uses CSS3 transitions to create smooth animations for modern webapps. These pre-release functions are simple, but you already have a lot of options on your hand.
 
-You can create animations that are called after other animations, animations that affects many elements, chained complex animations or even a GUI that chains animations and plays it when you want.
+You can create animations that are called after other animations, animations that affects many elements, chain complex animations or even a GUI that chains animations and plays it when you want.
 
 ## Contributing
 
@@ -208,7 +206,7 @@ You can create animations that are called after other animations, animations tha
 
 ##Wrap-up
 
-For now, I'll improve these main functions to deploy a v0.1 as soon as possible. Feel free to send pull requests with improvements to existing code or fill issues with feature requests. To maintain my sanity, please do not report bugs yet. You know, I just started this thing. When a pre-release version shows up, I will be happy if you send bug reports and even unit tests to ensure it will never happen again.
+For now, I'll improve these main functions to deploy a v0.1 as soon as possible. Feel free to send pull requests with improvements to existing code or fill issues with feature requests. To maintain my sanity, please do not report bugs yet. You know, I just started this thing. When a RC version shows up, I will be happy if you send bug reports and even unit tests to ensure it will never happen again.
 
 ##Contact
 
@@ -226,4 +224,4 @@ I'm reachable at Twitter ([@hugobessaa](https://twitter.com/hugobessaa)), ADN ([
 
 ##License
 
-MIT, freak out …and read the LICENSE file.
+MIT, freak out
