@@ -3,21 +3,22 @@ var App;
 (function(window, document) {
   var Moon;
   Moon = function(target, args) {
-    return new Moon.fn.init(target, args);
+    var self;
+    self = this;
+    if (window === self) {
+      return new Moon(target, args);
+    }
+    self._collection = Moon.fn.getMoonCollection(target);
+    self._callback = void 0;
+    self._stack = [];
+    self._step = -1;
+    self._prefixes = {};
+    self._prefixes["transition"] = Moon.fn.getPrefix("transition");
+    return self;
   };
   Moon.fn = Moon.prototype = {
-    _collection: [],
-    _stack: [],
-    _step: -1,
-    _callback: void 0,
-    init: function(target, args) {
-      var self;
-      self = this;
-      self._collection = self.getMoonCollection(target);
-      return self;
-    },
     getMoonCollection: function(target) {
-      var aux, collection, el, selectedElements, tgt, _i, _j, _k, _l, _len, _len1, _len2, _len3;
+      var aux, collection, el, selectedElements, tgt, _i, _len;
       collection = [];
       if (!(target instanceof Array)) {
         aux = target;
@@ -27,44 +28,63 @@ var App;
       for (_i = 0, _len = target.length; _i < _len; _i++) {
         tgt = target[_i];
         if (tgt instanceof NodeList || tgt instanceof HTMLCollection) {
-          for (_j = 0, _len1 = tgt.length; _j < _len1; _j++) {
-            el = tgt[_j];
-            collection.push(el);
-          }
+          collection.push((function() {
+            var _j, _len1, _results;
+            _results = [];
+            for (_j = 0, _len1 = tgt.length; _j < _len1; _j++) {
+              el = tgt[_j];
+              _results.push(el);
+            }
+            return _results;
+          })());
         } else if (typeof tgt === "string") {
           selectedElements = document.querySelectorAll(tgt);
-          for (_k = 0, _len2 = selectedElements.length; _k < _len2; _k++) {
-            el = selectedElements[_k];
-            collection.push(el);
-          }
+          collection.push((function() {
+            var _j, _len1, _results;
+            _results = [];
+            for (_j = 0, _len1 = selectedElements.length; _j < _len1; _j++) {
+              el = selectedElements[_j];
+              _results.push(el);
+            }
+            return _results;
+          })());
         } else if (!(tgt instanceof Array)) {
           collection.push(tgt);
         } else {
-          for (_l = 0, _len3 = tgt.length; _l < _len3; _l++) {
-            el = tgt[_l];
-            collection.push(el);
-          }
+          collection.push((function() {
+            var _j, _len1, _results;
+            _results = [];
+            for (_j = 0, _len1 = tgt.length; _j < _len1; _j++) {
+              el = tgt[_j];
+              _results.push(el);
+            }
+            return _results;
+          })());
         }
       }
       return collection;
     },
     getPrefix: function(prop) {
-      var indexOfDash, pre, prefixes, _i, _len;
-      prefixes = ["", "webkit", "moz", "ms", "O"];
+      var indexOfDash, pre, prefixes, propertie, _i, _len;
+      prefixes = ["webkit", "moz", "ms", "O"];
       indexOfDash = prop.indexOf("-");
       while (indexOfDash > -1) {
         prop = prop.slice(0, indexOfDash) + prop.charAt(indexOfDash + 1).toUpperCase() + prop.slice(indexOfDash + 2);
         indexOfDash = prop.indexOf("-");
       }
+      if (document.documentElement.style[prop] != null) {
+        return prop;
+      }
       for (_i = 0, _len = prefixes.length; _i < _len; _i++) {
         pre = prefixes[_i];
-        if (pre !== "") {
-          prop = prop.charAt(0).toUpperCase() + prop.slice(1);
-        }
-        if (document.documentElement.style[pre + prop] != null) {
-          return pre + prop;
+        propertie = pre + Moon.fn.cap(prop);
+        if (document.documentElement.style[propertie] != null) {
+          return propertie;
         }
       }
+    },
+    cap: function(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
     },
     animate: function(args) {
       var animationProps, arg, self, value;
@@ -95,7 +115,7 @@ var App;
       self = this;
       self._step++;
       anm = self._stack[self._step];
-      if (typeof anm !== "undefined" && anm !== null) {
+      if (anm != null) {
         if (typeof anm.beforeAnimation === "function") {
           anm.beforeAnimation();
         }
@@ -105,13 +125,13 @@ var App;
           el.style[self.getPrefix("transition")] = "" + anm.duration + "ms all " + anm.easing + " " + anm.delay + "ms";
           for (key in anm) {
             value = anm[key];
-            if (key === "duration" || key === "delay" || key === "easing") {
+            if (key === "duration" || key === "delay" || key === "easing" || key === "beforeAnimation" || key === "afterAnimation") {
               continue;
             }
             el.style[self.getPrefix(key)] = value;
           }
         }
-        return nextTimeout = setTimeout(function() {
+        nextTimeout = setTimeout(function() {
           if (typeof anm.afterAnimation === "function") {
             anm.afterAnimation();
           }
@@ -119,14 +139,16 @@ var App;
           return clearTimeout(nextTimeout);
         }, anm.delay + anm.duration);
       } else {
-        self._step = -1;
         if (self._callback != null) {
-          return self._callback();
+          self._callback();
         }
+        self._callback = void 0;
+        self._step = -1;
+        self._stack = [];
       }
+      return self;
     }
   };
-  Moon.fn.init.prototype = Moon.fn;
   return window.Moon = Moon;
 })(window, document);
 
@@ -143,7 +165,7 @@ App = {
   },
   controllers: {
     activateAnimation: function(index) {
-      var a, tgt;
+      var a, count, tgt, total;
       a = App;
       index = parseInt(index, 10);
       a.controllers.cleanAnimations();
@@ -155,7 +177,7 @@ App = {
               "transform": "scale(1.2) rotate(180deg)",
               "duration": 1500
             }).play();
-          }, 500);
+          }, 1);
         case 1:
           tgt = a.controllers.createTargets(1);
           return setTimeout(function() {
@@ -172,7 +194,81 @@ App = {
               "transform": "translate3d(0,0,0)",
               "duration": 1500
             }).play();
-          }, 500);
+          }, 1);
+        case 2:
+          tgt = a.controllers.createTargets(2);
+          return setTimeout(function() {
+            return Moon(tgt).animate({
+              "transform": "scale(1.2) rotate(180deg)",
+              "duration": 1500
+            }).animate({
+              "transform": "translate3d(-100px, 0, 0) scale(0.8)",
+              "duration": 1500
+            }).animate({
+              "transform": "translate3d(300px, 0, 0) rotate(30deg)",
+              "duration": 1500
+            }).animate({
+              "transform": "translate3d(0,0,0)",
+              "duration": 1500
+            }).play();
+          }, 1);
+        case 3:
+          tgt = a.controllers.createTargets(1);
+          return setTimeout(function() {
+            return Moon(tgt).animate({
+              "transform": "scale(1.2) rotate(180deg)",
+              "duration": 1500
+            }).play(function() {
+              return alert("callback called");
+            });
+          }, 1);
+        case 4:
+          tgt = a.controllers.createTargets(1);
+          return setTimeout(function() {
+            return Moon(tgt).animate({
+              "transform": "scale(1.2) rotate(180deg)",
+              "duration": 1500,
+              "beforeAnimation": function() {
+                return alert("Function called before animation");
+              },
+              "afterAnimation": function() {
+                return alert("Function called after animation");
+              }
+            }).animate({
+              "transform": "scale(1) rotate(0deg)",
+              "duration": 1000,
+              "beforeAnimation": function() {
+                return alert("Function called before animation");
+              },
+              "afterAnimation": function() {
+                return alert("Function called after animation");
+              }
+            }).play();
+          }, 1);
+        case 5:
+          total = 1000;
+          tgt = [];
+          tgt.push(a.controllers.createTargets(total / 4, "mini"));
+          tgt.push(a.controllers.createTargets(total / 4, "mini"));
+          tgt.push(a.controllers.createTargets(total / 4, "mini"));
+          tgt.push(a.controllers.createTargets(total / 4, "mini"));
+          count = 0;
+          return setTimeout(function() {
+            var animation;
+            animation = function() {
+              console.log(count);
+              Moon(tgt[count]).animate({
+                "transform": "translate3d(" + ((Math.random() - 0.5) * 100) + "px, " + ((Math.random() - 0.5) * 100) + "px, 0) scale3d(" + (Math.random() + 0.5) + ", " + (Math.random() + 0.5) + ", " + (Math.random() + 0.5) + ")",
+                "duration": 100
+              }).play();
+              count++;
+              if (count > 3) {
+                count = 0;
+              }
+              return requestAnimationFrame(animation);
+            };
+            return animation();
+          }, 10);
       }
     },
     cleanAnimations: function() {
@@ -184,7 +280,7 @@ App = {
       }
       return _results;
     },
-    createTargets: function(num) {
+    createTargets: function(num, cls) {
       var a, i, tgt, tgtFrag, tgtsCreated, _i;
       a = App;
       tgtsCreated = [];
@@ -192,6 +288,9 @@ App = {
       for (i = _i = 1; 1 <= num ? _i <= num : _i >= num; i = 1 <= num ? ++_i : --_i) {
         tgt = document.createElement('div');
         tgt.classList.add('target');
+        if (cls != null) {
+          tgt.classList.add(cls);
+        }
         tgtFrag.appendChild(tgt);
         tgtsCreated.push(tgt);
       }

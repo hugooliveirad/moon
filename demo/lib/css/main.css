@@ -56,7 +56,20 @@ body .board--animation-wrapper .target {
   width: 200px;
   height: 200px;
   background: blue;
-  margin: 0 auto;
+  margin: 20px auto;
 }
-
-/*# sourceMappingURL=main.css.map */
+body .board--animation-wrapper .target.mini {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin: 10px 2px;
+}
+body .board--animation-wrapper .target.mini:nth-child(2n) {
+  background: red;
+}
+body .board--animation-wrapper .target.mini:nth-child(2n + 1) {
+  background: yellow;
+}
+body .board--animation-wrapper .target.mini:nth-child(2n + 2) {
+  background: orange;
+}
