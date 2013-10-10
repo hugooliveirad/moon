@@ -13,6 +13,8 @@ do (window, document) ->
         this._stack = []
         this._step = -1
         this._prefixes = {}
+        this._loop = 1
+        this._direction = true
 
         return this
 
@@ -95,8 +97,14 @@ do (window, document) ->
 
         # play function for intern use
         _play: ->
-            this._step++
-            anm = this._stack[this._step]
+            this._step += 1
+            if this._direction
+                step = this._step
+            else
+                step = this._stack.length - 1 - this._step
+
+            
+            anm = this._stack[step]
             if anm?
                 # before animation function
                 anm.beforeAnimation() if typeof anm.beforeAnimation == "function"
@@ -109,21 +117,46 @@ do (window, document) ->
                         if key == "duration" || key == "delay" || key == "easing" || key == "beforeAnimation" || key == "afterAnimation"
                             continue
                         el.style[this.getPrefix(key)] = value
-                            
-                nextTimeout = setTimeout ->
+                
+
+                nextTimeout = setTimeout =>
                     # after animation function
                     anm.afterAnimation() if typeof anm.afterAnimation == "function"
 
                     # continue chained animations
-                    this._play()
+                    @._play()
 
                     clearTimeout(nextTimeout)
                 , anm.delay + anm.duration
 
             # no more stacked animations
             else
-                this._callback() if this._callback?
-                this.reset()
+                this._step = -1
+
+                # loopings that are numbers are finite
+                if typeof this._loop == "number"
+                    this._loop -= 1
+                    if this._loop > 0
+                        this._play()
+                    else
+                        this._callback() if this._callback?
+                        this.reset()
+
+                # strings are infinite
+                else if typeof this._loop == "string"
+                    this._callback() if this._callback?
+                    
+                    if this._loop == "alternate"
+                        this._direction = !this._direction
+                        this._play()
+                    else if this._loop == "infinite"
+                        this._play()
+
+            return this
+
+        # set loop
+        loop: (looping) ->
+            this._loop = looping
             return this
 
         # reset Moon animation
@@ -131,5 +164,7 @@ do (window, document) ->
             this._callback = undefined
             this._step = -1
             this._stack = []
+            this._loop = 1
+            this._direction = true
 
     window.Moon = Moon
