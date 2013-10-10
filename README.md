@@ -31,7 +31,7 @@ Moon("#selector" | HTMLCollection | NodeList);
 ###animate()
 
 ```javascript
-.animate({"propertie": "value"});
+.animate({"property": "value"});
 ```
 
 The `animate()` works with any Moon object. To use it, you just have to pass the properties you want to change as a JavaScript object. You can than use `"duration": 1000`, `"delay": 500` (in milliseconds) and `"easing": "ease"` to change the behavior of your animation.
