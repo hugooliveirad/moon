@@ -48,31 +48,27 @@ do (window, document) ->
                 return Moon.fn._prefixes[prop]
 
             # if not, continue the search for it
-            prefixes = ["webkit", "moz", "ms", "O"]
+            prefixes = ["webkit-", "moz-", "ms-", "O-"]
 
-            indexOfDash = prop.indexOf("-")
-            while indexOfDash > -1
+            # camelCase properties
+            prop = Moon.fn.camelize(prop)
 
-                # the letter after the dash is capitalized
-                prop = prop.slice(0, indexOfDash) + prop.charAt(indexOfDash + 1).toUpperCase() + prop.slice(indexOfDash + 2)
-                indexOfDash = prop.indexOf("-")
-
-            # is the propertie avaiable without prefix?
+            # is the property avaiable without prefix?
             if document.documentElement.style[prop]?
                 Moon.fn._prefixes[prop] = prop
                 return prop
 
             # if not, try to find the prefix
-            propCap = Moon.fn.cap(prop)
             for pre in prefixes
-                propertie = pre + propCap
-                if document.documentElement.style[propertie]?
-                    Moon.fn._prefixes[prop] = propertie
+                property = Moon.fn.camelize(pre + propCap)
+                if document.documentElement.style[property]?
+                    Moon.fn._prefixes[prop] = property
                     return propertie
 
         # capitalizes the first letter
-        cap: (str) ->
-            return str.charAt(0).toUpperCase() + str.slice(1);
+        camelize: (str) ->
+            return str.replace(/-([\da-z])/gi, ($1) -> 
+                return $1.toUpperCase().replace('-','')
 
         # defines an animation step. Moon animations must have at least one step
         animate: (args) ->
