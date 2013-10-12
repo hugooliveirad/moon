@@ -63,7 +63,7 @@ do (window, document) ->
                 property = Moon.fn.camelize(pre + propCap)
                 if document.documentElement.style[property]?
                     Moon.fn._prefixes[prop] = property
-                    return propertie
+                    return property
 
         # capitalizes the first letter
         camelize: (str) ->
