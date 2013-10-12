@@ -19,7 +19,13 @@ do (window, document) ->
         return this
 
     Moon.fn = Moon.prototype =
+
+        # already returned prefixes
         _prefixes: {}
+
+        # default vendor prefixes
+        _vendorPrefixes = ["webkit-", "moz-", "ms-", "O-"]
+
         # returns the collection of HTMLCollection or NodeList, that can be animated by Moon later
         getMoonCollection: (target) ->
             collection = []
@@ -47,9 +53,6 @@ do (window, document) ->
             if Moon.fn._prefixes[prop]?
                 return Moon.fn._prefixes[prop]
 
-            # if not, continue the search for it
-            prefixes = ["webkit-", "moz-", "ms-", "O-"]
-
             # camelCase properties
             prop = Moon.fn.camelize(prop)
 
@@ -59,7 +62,7 @@ do (window, document) ->
                 return prop
 
             # if not, try to find the prefix
-            for pre in prefixes
+            for pre in Moon.fn._vendorPrefixes
                 property = Moon.fn.camelize(pre + propCap)
                 if document.documentElement.style[property]?
                     Moon.fn._prefixes[prop] = property
