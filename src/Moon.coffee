@@ -6,7 +6,7 @@ do (window, document) ->
             return new Moon(target, args)
 
         # Moon collection
-        this._collection = Moon.fn.getMoonCollection(target)
+        this._collection = Moon.fn._getMoonCollection(target)
 
         # Moon variables to control animation
         this._callback = undefined
@@ -27,7 +27,7 @@ do (window, document) ->
         _vendorPrefixes = ["webkit-", "moz-", "ms-", "O-"]
 
         # returns the collection of HTMLCollection or NodeList, that can be animated by Moon later
-        getMoonCollection: (target) ->
+        _getMoonCollection: (target) ->
             collection = []
             if !(target instanceof Array)
                 aux = target
@@ -47,14 +47,14 @@ do (window, document) ->
             return collection
 
         # returns the prefix of a css style in "javascript" style. Used mainly for css3
-        getPrefix: (prop) ->
+        _getPrefix: (prop) ->
 
             # check if Moon already tried to get this prefix
             if Moon.fn._prefixes[prop]?
                 return Moon.fn._prefixes[prop]
 
             # camelCase properties
-            prop = Moon.fn.camelize(prop)
+            prop = Moon.fn._camelize(prop)
 
             # is the property avaiable without prefix?
             if document.documentElement.style[prop]?
@@ -63,21 +63,21 @@ do (window, document) ->
 
             # if not, try to find the prefix
             for pre in Moon.fn._vendorPrefixes
-                property = Moon.fn.camelize(pre + propCap)
+                property = Moon.fn._camelize(pre + propCap)
                 if document.documentElement.style[property]?
                     Moon.fn._prefixes[prop] = property
                     return property
 
         # capitalizes the first letter
-        camelize: (str) ->
-            return str.replace(Moon.fn.rdashAlpha, Moon.fn.camelizeReplaceCallback)
+        _camelize: (str) ->
+            return str.replace(Moon.fn._rdashAlpha, Moon.fn._camelizeReplaceCallback)
 
         # RegExp to match the dash and the char after it
-        rdashAlpha: "/-([\D])/g"
+        _rdashAlpha: "/-([\D])/g"
 
-        # camelize replace callback function to return
+        # _camelize replace callback function to return
         # just the capitalized char
-        camelizeReplaceCallback: ($1) ->
+        _camelizeReplaceCallback: ($1) ->
             return $1.charAt(1).toUpperCase()            
 
         # defines an animation step. Moon animations
@@ -118,12 +118,12 @@ do (window, document) ->
 
                 # apply animation for each element
                 for el in this._collection
-                    el.style[this.getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
+                    el.style[this._getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
 
                     for key, value of anm
                         if key == "duration" || key == "delay" || key == "easing" || key == "before" || key == "after"
                             continue
-                        el.style[this.getPrefix(key)] = value
+                        el.style[this._getPrefix(key)] = value
                 
 
                 nextTimeout = setTimeout =>
@@ -165,15 +165,15 @@ do (window, document) ->
         set: (args) ->
             for el in this._collection
                 for key, value of args
-                    el.style[this.getPrefix(key)] = value
+                    el.style[this._getPrefix(key)] = value
 
         pause: ->
             for el in this._collection
-                el.style[this.getPrefix("transition")] = null
+                el.style[this._getPrefix("transition")] = null
                 for key, prop of this._stack[this._step]
                     if key == "duration" || key == "delay" || key == "easing" || key == "before" || key == "after"
                         continue
-                    el.style[this.getPrefix(key)] = window.getComputedStyle(el, null).getPropertyValue(key)
+                    el.style[this._getPrefix(key)] = window.getComputedStyle(el, null).getPropertyValue(key)
 
         # set loop
         loop: (looping) ->
