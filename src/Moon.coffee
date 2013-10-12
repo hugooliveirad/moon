@@ -87,8 +87,8 @@ do (window, document) ->
                 duration: 0
                 delay: 0
                 easing: "ease"
-                beforeAnimation: undefined
-                afterAnimation: undefined
+                before: undefined
+                after: undefined
 
             for arg, value of args
                 animationProps[arg] = value
@@ -114,21 +114,21 @@ do (window, document) ->
             anm = this._stack[step]
             if anm?
                 # before animation function
-                anm.beforeAnimation() if typeof anm.beforeAnimation == "function"
+                anm.before() if typeof anm.before == "function"
 
                 # apply animation for each element
                 for el in this._collection
                     el.style[this.getPrefix("transition")] = "#{anm.duration}ms all #{anm.easing} #{anm.delay}ms"
 
                     for key, value of anm
-                        if key == "duration" || key == "delay" || key == "easing" || key == "beforeAnimation" || key == "afterAnimation"
+                        if key == "duration" || key == "delay" || key == "easing" || key == "before" || key == "after"
                             continue
                         el.style[this.getPrefix(key)] = value
                 
 
                 nextTimeout = setTimeout =>
                     # after animation function
-                    anm.afterAnimation() if typeof anm.afterAnimation == "function"
+                    anm.after() if typeof anm.after == "function"
 
                     # continue chained animations
                     @._play()
@@ -171,7 +171,7 @@ do (window, document) ->
             for el in this._collection
                 el.style[this.getPrefix("transition")] = null
                 for key, prop of this._stack[this._step]
-                    if key == "duration" || key == "delay" || key == "easing" || key == "beforeAnimation" || key == "afterAnimation"
+                    if key == "duration" || key == "delay" || key == "easing" || key == "before" || key == "after"
                         continue
                     el.style[this.getPrefix(key)] = window.getComputedStyle(el, null).getPropertyValue(key)
 
