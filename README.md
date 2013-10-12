@@ -72,74 +72,7 @@ The callback function will be fired at the end of each loop if you are looping w
 Reset any animation or configuration done to a Moon object. Great if you want to start another animation with the same objects.
 
 ##Examples
-###Simple animation (fade out in 1 second with 500ms of delay):
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000,
-    "delay": 500
-}).play();
-```
-
-###Chained animations (fade out in 1 second and fade in in 500ms):
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000
-}).animate({
-    "opacity": "1",
-    "duration": 500
-}).play();
-```
-
-###Two elements animation (fade out):
-
-```javascript
-// Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
-Moon(["#selector", document.querySelectorAll(".selector")]).animate({
-    "opacity": "0",
-    "duration": 1000
-}).play();
-```
-
-###Animation with callback:
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000
-}).play(function(){
-    console.log("callback function");
-});
-```
-
-###Animation with before, after and callback calls
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000,
-    "before": function () {
-        console.log("First animation is playing");
-    }
-    "after": function () {
-        console.log("Second animation stopped");
-    }
-}).animate({
-    "opacity": "1"
-    "duration": 1000
-    "before": function () {
-        console.log("Second animation is playing");
-    }
-    "after": function () {
-        console.log("Second animation stopped");
-    }
-}).play(function () {
-    console.log("Everything ended");
-});
-```
+See full examples on how to use Moon [here](https://github.com/hugobessaa/moon/blob/master/EXAMPLES.md)
     
 
 ##Go wild
