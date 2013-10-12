@@ -267,5 +267,8 @@ do (window, document) ->
             this._stack = []
             this._loop = 1
             this._direction = true
+            this.set(
+                "transition": null
+            )
 
     window.Moon = Moon
