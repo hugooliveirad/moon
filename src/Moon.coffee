@@ -156,6 +156,14 @@ do (window, document) ->
                 for key, value of args
                     el.style[this.getPrefix(key)] = value
 
+        pause: ->
+            for el in this._collection
+                el.style[this.getPrefix("transition")] = null
+                for key, prop of this._stack[this._step]
+                    if key == "duration" || key == "delay" || key == "easing" || key == "beforeAnimation" || key == "afterAnimation"
+                        continue
+                    el.style[this.getPrefix(key)] = window.getComputedStyle(el, null).getPropertyValue(key)
+
         # set loop
         loop: (looping) ->
             this._loop = looping
