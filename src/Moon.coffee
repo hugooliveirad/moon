@@ -67,10 +67,18 @@ do (window, document) ->
 
         # capitalizes the first letter
         camelize: (str) ->
-            return str.replace(/-([\da-z])/gi, ($1) -> 
-                return $1.toUpperCase().replace('-','')
+            return str.replace(Moon.fn.rdashAlpha, Moon.fn.camelizeReplaceCallback)
 
-        # defines an animation step. Moon animations must have at least one step
+        # RegExp to match the dash and the char after it
+        rdashAlpha: "/-([\D])/g"
+
+        # camelize replace callback function to return
+        # just the capitalized char
+        camelizeReplaceCallback: ($1) ->
+            return $1.charAt(1).toUpperCase()            
+
+        # defines an animation step. Moon animations
+        # must have at least one step
         animate: (args) ->
             animationProps =
                 duration: 0
