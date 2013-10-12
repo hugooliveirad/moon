@@ -26,7 +26,7 @@ But sometimes you need horse power to bring to reality that crazy animation idea
 ```javascript
 Moon("#selector" | HTMLCollection | NodeList);
 ```
-`Moon()` function is the main function of Moon.js. It accepts an array of CSS selectors, HTMLCollections or NodeLists and returns an Moon object. This magical object has some prototyped methods. What you can do with it? Animate everything, of course! How? Take a look:
+`Moon()` function is the main function of Moon.js. It accepts an array of CSS selectors, HTMLCollections or NodeLists and returns a Moon object. This magical object has some prototyped methods. What you can do with it? Animate everything, of course! How? Take a look:
 
 ###animate()
 
@@ -42,6 +42,8 @@ Moon("#selector").animate().animate();
 ```
 
 Yes, it's this simple.
+
+There are callbacks too. Take a look at the [EXAMPLES.md file](https://github.com/hugobessaa/moon/blob/master/EXAMPLES.md).
 
 ###loop()
 
@@ -63,6 +65,16 @@ The callback function will be fired at the end of each loop if you are looping w
 
 *We believe it's better to have a `play()` method instead of playing the animation right after calling the `animate()` method. With Moon, you can build your entire animation before playing it.*
 
+###set()
+
+```javascript
+.set({"property": "value"});
+```
+
+Not always you want to set some property you want to animate it. Using all the power of Moon to change CSS properties, the `set()` method will just work. Vendor prefixes headache not included.
+
+*Altough `set()` does not set a transition property for the elements, it do not erase it too. If you want to be sure that not a single property will be animated, set `transition` to `null`. We do this when an animation chain ends on Moon.*
+
 ###reset()
 
 ```javascript
@@ -72,7 +84,7 @@ The callback function will be fired at the end of each loop if you are looping w
 Reset any animation or configuration done to a Moon object. Great if you want to start another animation with the same objects.
 
 ##Examples
-See full examples on how to use Moon [here](https://github.com/hugobessaa/moon/blob/master/EXAMPLES.md)
+See full examples on how to use Moon in the [EXAMPLES.md file](https://github.com/hugobessaa/moon/blob/master/EXAMPLES.md)
     
 
 ##Go wild
