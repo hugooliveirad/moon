@@ -42,14 +42,19 @@ do (window, document) ->
                 target.push(aux)
             for tgt in target
                 if tgt instanceof NodeList || tgt instanceof HTMLCollection
-                    collection.push(el for el in tgt)
+                    for el in tgt
+                        collection.push(el)
                 else if typeof tgt == "string"
                     selectedElements = document.querySelectorAll(tgt)
-                    collection.push(el for el in selectedElements)
+                    for el in selectedElements
+                        collection.push(el)
                 else if !(tgt instanceof Array)
                     collection.push(tgt)
+                    
                 else
-                    collection.push(el for el in tgt)
+                    for el in tgt
+                        collection.push(el)
+
 
             return collection
 
