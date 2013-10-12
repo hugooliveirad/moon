@@ -1,9 +1,9 @@
 do (window, document) ->
     # Main object of MoonJS
-    Moon = (target, args) ->
+    Moon = (target) ->
         # this function acts like a 'enhanced' init
         if window == this
-            return new Moon(target, args)
+            return new Moon(target)
 
         # Moon collection
         this._collection = Moon.fn._getMoonCollection(target)
