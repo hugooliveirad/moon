@@ -260,7 +260,10 @@ var App;
       this._step = -1;
       this._stack = [];
       this._loop = 1;
-      return this._direction = true;
+      this._direction = true;
+      return this.set({
+        "transition": null
+      });
     }
   };
   return window.Moon = Moon;
