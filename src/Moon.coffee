@@ -19,7 +19,14 @@ do (window, document) ->
         return this
 
     Moon.fn = Moon.prototype =
-
+        # config object
+        config:
+            duration: 1000
+            delay: 0
+            easing: "ease"
+            before: undefined
+            after: undefined
+        
         # already returned prefixes
         _prefixes: {}
 
@@ -84,11 +91,11 @@ do (window, document) ->
         # must have at least one step
         animate: (args) ->
             animationProps =
-                duration: 0
-                delay: 0
-                easing: "ease"
-                before: undefined
-                after: undefined
+                duration: Moon.config.duration
+                delay: Moon.config.delay
+                easing: Moon.config.easing
+                before: Moon.config.before
+                after: Moon.config.after
 
             for arg, value of args
                 animationProps[arg] = value
