@@ -93,16 +93,16 @@ App =
                         Moon(tgt).animate
                             "transform": "scale(1.2) rotate(180deg)"
                             "duration": 1500
-                            "beforeAnimation": ->
+                            "before": ->
                                 alert("Function called before animation")
-                            "afterAnimation": ->
+                            "after": ->
                                 alert("Function called after animation")
                         .animate
                             "transform": "scale(1) rotate(0deg)"
                             "duration": 1000
-                            "beforeAnimation": ->
+                            "before": ->
                                 alert("Function called before animation")
-                            "afterAnimation": ->
+                            "after": ->
                                 alert("Function called after animation")
                         .play()
                         
@@ -132,6 +132,41 @@ App =
                         animation()
 
                     , 10
+
+                # set
+                when 6
+                    tgt = a.controllers.createTargets(1)
+                    setTimeout ->
+                        Moon(".target").set
+                            "transform": "scale(.5)"
+                    , 1000
+
+                # pause
+                when 7
+                    tgt = a.controllers.createTargets(1)
+                    setTimeout ->
+                        myMoon = Moon(tgt).animate
+                            "transform": "scale(1.2) rotate(180deg)"
+                            "duration": 1500
+                        .animate
+                            "transform": "translate3d(-100px, 0, 0) scale(0.8)"
+                            "duration": 1500
+                        .animate
+                            "transform": "translate3d(300px, 0, 0) rotate(30deg)"
+                            "duration": 1500
+                        .animate
+                            "transform": "translate3d(0,0,0)"
+                            "duration": 1500
+                        .play()
+
+                        setTimeout ->
+                            myMoon.pause()
+                        , 1600
+
+                        tgt[0].addEventListener('click', ->
+                            myMoon.play()
+                        )
+                    , 1
 
 
         cleanAnimations: ->

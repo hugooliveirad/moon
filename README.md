@@ -26,7 +26,7 @@ But sometimes you need horse power to bring to reality that crazy animation idea
 ```javascript
 Moon("#selector" | HTMLCollection | NodeList);
 ```
-`Moon()` function is the main function of Moon.js. It accepts an array of CSS selectors, HTMLCollections or NodeLists and returns an Moon object. This magical object has some prototyped methods. What you can do with it? Animate everything, of course! How? Take a look:
+`Moon()` function is the main function of Moon.js. It accepts an array of CSS selectors, HTMLCollections or NodeLists and returns a Moon object. This magical object has some prototyped methods. What you can do with it? Animate everything, of course! How? Take a look:
 
 ###animate()
 
@@ -42,6 +42,8 @@ Moon("#selector").animate().animate();
 ```
 
 Yes, it's this simple.
+
+There are callbacks too. Take a look at the [EXAMPLES.md file](https://github.com/hugobessaa/moon/blob/master/EXAMPLES.md).
 
 ###loop()
 
@@ -63,6 +65,16 @@ The callback function will be fired at the end of each loop if you are looping w
 
 *We believe it's better to have a `play()` method instead of playing the animation right after calling the `animate()` method. With Moon, you can build your entire animation before playing it.*
 
+###set()
+
+```javascript
+.set({"property": "value"});
+```
+
+Not always you want to set some property you want to animate it. Using all the power of Moon to change CSS properties, the `set()` method will just work. Vendor prefixes headache not included.
+
+*Altough `set()` does not set a transition property for the elements, it do not erase it too. If you want to be sure that not a single property will be animated, set `transition` to `null`. We do this when an animation chain ends on Moon.*
+
 ###reset()
 
 ```javascript
@@ -72,74 +84,7 @@ The callback function will be fired at the end of each loop if you are looping w
 Reset any animation or configuration done to a Moon object. Great if you want to start another animation with the same objects.
 
 ##Examples
-###Simple animation (fade out in 1 second with 500ms of delay):
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000,
-    "delay": 500
-}).play();
-```
-
-###Chained animations (fade out in 1 second and fade in in 500ms):
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000
-}).animate({
-    "opacity": "1",
-    "duration": 500
-}).play();
-```
-
-###Two elements animation (fade out):
-
-```javascript
-// Moon.js accepts an array of elements. In the array you can also pass a HTMLCollection or NodeList.
-Moon(["#selector", document.querySelectorAll(".selector")]).animate({
-    "opacity": "0",
-    "duration": 1000
-}).play();
-```
-
-###Animation with callback:
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000
-}).play(function(){
-    console.log("callback function");
-});
-```
-
-###Animation with before, after and callback calls
-
-```javascript
-Moon("#selector").animate({
-    "opacity": "0",
-    "duration": 1000,
-    "beforeAnimation": function () {
-        console.log("First animation is playing");
-    }
-    "afterAnimation": function () {
-        console.log("Second animation stopped");
-    }
-}).animate({
-    "opacity": "1"
-    "duration": 1000
-    "beforeAnimation": function () {
-        console.log("Second animation is playing");
-    }
-    "afterAnimation": function () {
-        console.log("Second animation stopped");
-    }
-}).play(function () {
-    console.log("Everything ended");
-});
-```
+See full examples on how to use Moon in the [EXAMPLES.md file](https://github.com/hugobessaa/moon/blob/master/EXAMPLES.md)
     
 
 ##Go wild
@@ -164,19 +109,7 @@ For now, I'll improve these main functions to deploy a v0.1 as soon as possible.
 I'm reachable at Twitter ([@hugobessaa](https://twitter.com/hugobessaa)), ADN ([@bessa](https://alpha.app.net/bessa)) or email ([hugobessaa+moon@gmail.com](mailto:hugobessaa+moon@gmail.com)). Contact me. I work full-time and study, but I will reply you.
 
 ##History
-- [v0.0.4](https://github.com/hugobessaa/moon/releases/tag/v0.0.3.1) - October 10, 2013
-    - Optimized Moon to make it better, faster, stronger
-    - Added looping support
-    - New reset() method
-    - Dropped CoffeeScript examples
-- [v0.0.3.1](https://github.com/hugobessaa/moon/releases/tag/v0.0.3.1) - September 4, 2013
-	- ignore *.swo files
-	- Moon.pt passed as argument for beforeAnimation, afterAnimation and
-	  callback
-- [v0.0.3](https://github.com/hugobessaa/moon/releases/tag/v0.0.3) - September 3, 2013
-	- beforeAnimation and afterAnimation functions
-	- QUnit tests
-	- ignore *.swp files
+Follow version logs and releases at [the releases page](https://github.com/hugobessaa/moon/releases)
 
 ##License
 
