@@ -164,19 +164,7 @@ For now, I'll improve these main functions to deploy a v0.1 as soon as possible.
 I'm reachable at Twitter ([@hugobessaa](https://twitter.com/hugobessaa)), ADN ([@bessa](https://alpha.app.net/bessa)) or email ([hugobessaa+moon@gmail.com](mailto:hugobessaa+moon@gmail.com)). Contact me. I work full-time and study, but I will reply you.
 
 ##History
-- [v0.0.4](https://github.com/hugobessaa/moon/releases/tag/v0.0.3.1) - October 10, 2013
-    - Optimized Moon to make it better, faster, stronger
-    - Added looping support
-    - New reset() method
-    - Dropped CoffeeScript examples
-- [v0.0.3.1](https://github.com/hugobessaa/moon/releases/tag/v0.0.3.1) - September 4, 2013
-	- ignore *.swo files
-	- Moon.pt passed as argument for beforeAnimation, afterAnimation and
-	  callback
-- [v0.0.3](https://github.com/hugobessaa/moon/releases/tag/v0.0.3) - September 3, 2013
-	- beforeAnimation and afterAnimation functions
-	- QUnit tests
-	- ignore *.swp files
+Follow version logs and releases at [the releases page](https://github.com/hugobessaa/moon/releases)
 
 ##License
 
