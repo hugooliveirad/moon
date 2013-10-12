@@ -26,7 +26,7 @@ do (window, document) ->
             easing: "ease"
             before: undefined
             after: undefined
-        
+
         # already returned prefixes
         _prefixes: {}
 
@@ -76,6 +76,7 @@ do (window, document) ->
                     return property
 
         # capitalizes the first letter
+        # this implementation is done before deep optimization research (#2)
         _camelize: (str) ->
             return str.replace(Moon.fn._rdashAlpha, Moon.fn._camelizeReplaceCallback)
 
