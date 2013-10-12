@@ -121,19 +121,19 @@ Moon("#selector").animate({
 Moon("#selector").animate({
     "opacity": "0",
     "duration": 1000,
-    "beforeAnimation": function () {
+    "before": function () {
         console.log("First animation is playing");
     }
-    "afterAnimation": function () {
+    "after": function () {
         console.log("Second animation stopped");
     }
 }).animate({
     "opacity": "1"
     "duration": 1000
-    "beforeAnimation": function () {
+    "before": function () {
         console.log("Second animation is playing");
     }
-    "afterAnimation": function () {
+    "after": function () {
         console.log("Second animation stopped");
     }
 }).play(function () {
