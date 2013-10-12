@@ -1,5 +1,3 @@
-var App;
-
 (function(window, document) {
   var Moon;
   Moon = function(target) {
@@ -269,183 +267,39 @@ var App;
   return window.Moon = Moon;
 })(window, document);
 
-App = {
-  init: function() {
-    var a;
-    a = App;
-    a.animationWrapper = document.getElementById("animationWrapper");
-    a.animationSelect = document.getElementById('animationSelector');
-    a.animationSelect.addEventListener('change', function(e) {
-      return a.controllers.activateAnimation(this.value);
-    });
-    return a.controllers.cleanAnimations();
-  },
-  controllers: {
-    activateAnimation: function(index) {
-      var a, count, tgt, total;
-      a = App;
-      index = parseInt(index, 10);
-      a.controllers.cleanAnimations();
-      switch (index) {
-        case 0:
-          tgt = a.controllers.createTargets(1);
-          return setTimeout(function() {
-            return Moon(tgt).animate({
-              "transform": "scale(1.2) rotate(180deg)",
-              "duration": 1500
-            }).play();
-          }, 1);
-        case 1:
-          tgt = a.controllers.createTargets(1);
-          return setTimeout(function() {
-            return Moon(tgt).animate({
-              "transform": "scale(1.2) rotate(180deg)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(-100px, 0, 0) scale(0.8)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(300px, 0, 0) rotate(30deg)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(0,0,0)",
-              "duration": 1500
-            }).play();
-          }, 1);
-        case 2:
-          tgt = a.controllers.createTargets(2);
-          return setTimeout(function() {
-            return Moon(tgt).animate({
-              "transform": "scale(1.2) rotate(180deg)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(-100px, 0, 0) scale(0.8)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(300px, 0, 0) rotate(30deg)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(0,0,0)",
-              "duration": 1500
-            }).play();
-          }, 1);
-        case 3:
-          tgt = a.controllers.createTargets(1);
-          return setTimeout(function() {
-            return Moon(tgt).animate({
-              "transform": "scale(1.2) rotate(180deg)",
-              "duration": 1500
-            }).play(function() {
-              return alert("callback called");
-            });
-          }, 1);
-        case 4:
-          tgt = a.controllers.createTargets(1);
-          return setTimeout(function() {
-            return Moon(tgt).animate({
-              "transform": "scale(1.2) rotate(180deg)",
-              "duration": 1500,
-              "before": function() {
-                return alert("Function called before animation");
-              },
-              "after": function() {
-                return alert("Function called after animation");
-              }
-            }).animate({
-              "transform": "scale(1) rotate(0deg)",
-              "duration": 1000,
-              "before": function() {
-                return alert("Function called before animation");
-              },
-              "after": function() {
-                return alert("Function called after animation");
-              }
-            }).play();
-          }, 1);
-        case 5:
-          total = 1000;
-          tgt = [];
-          tgt.push(a.controllers.createTargets(total / 4, "mini"));
-          tgt.push(a.controllers.createTargets(total / 4, "mini"));
-          tgt.push(a.controllers.createTargets(total / 4, "mini"));
-          tgt.push(a.controllers.createTargets(total / 4, "mini"));
-          count = 0;
-          return setTimeout(function() {
-            var animation;
-            animation = function() {
-              console.log(count);
-              Moon(tgt[count]).animate({
-                "transform": "translate3d(" + ((Math.random() - 0.5) * 100) + "px, " + ((Math.random() - 0.5) * 100) + "px, 0) scale3d(" + (Math.random() + 0.5) + ", " + (Math.random() + 0.5) + ", " + (Math.random() + 0.5) + ")",
-                "duration": 100
-              }).play();
-              count++;
-              if (count > 3) {
-                count = 0;
-              }
-              return requestAnimationFrame(animation);
-            };
-            return animation();
-          }, 10);
-        case 6:
-          tgt = a.controllers.createTargets(1);
-          return setTimeout(function() {
-            return Moon(".target").set({
-              "transform": "scale(.5)"
-            });
-          }, 1000);
-        case 7:
-          tgt = a.controllers.createTargets(1);
-          return setTimeout(function() {
-            var myMoon;
-            myMoon = Moon(tgt).animate({
-              "transform": "scale(1.2) rotate(180deg)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(-100px, 0, 0) scale(0.8)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(300px, 0, 0) rotate(30deg)",
-              "duration": 1500
-            }).animate({
-              "transform": "translate3d(0,0,0)",
-              "duration": 1500
-            }).play();
-            setTimeout(function() {
-              return myMoon.pause();
-            }, 1600);
-            return tgt[0].addEventListener('click', function() {
-              return myMoon.play();
-            });
-          }, 1);
-      }
+(function(window, document) {
+  var Tests;
+  Tests = {
+    init: function() {
+      Tests.targets = document.querySelectorAll(".target");
+      return Tests.test();
     },
-    cleanAnimations: function() {
-      var a, _results;
-      a = App;
-      _results = [];
-      while (a.animationWrapper.firstChild) {
-        _results.push(a.animationWrapper.removeChild(a.animationWrapper.firstChild));
-      }
-      return _results;
-    },
-    createTargets: function(num, cls) {
-      var a, i, tgt, tgtFrag, tgtsCreated, _i;
-      a = App;
-      tgtsCreated = [];
-      tgtFrag = document.createDocumentFragment();
-      for (i = _i = 1; 1 <= num ? _i <= num : _i >= num; i = 1 <= num ? ++_i : --_i) {
-        tgt = document.createElement('div');
-        tgt.classList.add('target');
-        if (cls != null) {
-          tgt.classList.add(cls);
-        }
-        tgtFrag.appendChild(tgt);
-        tgtsCreated.push(tgt);
-      }
-      a.animationWrapper.appendChild(tgtFrag);
-      return tgtsCreated;
+    test: function() {
+      return test("Test Moon main function", function() {
+        var instances, singleInstance;
+        singleInstance = Moon("#target");
+        ok(singleInstance instanceof Moon, "Moon should return a instance of itself");
+        notStrictEqual(singleInstance._collection, null, "Moon instance must have a collection");
+        notStrictEqual(singleInstance._callback, null, "Moon instance must have a callback");
+        notStrictEqual(singleInstance._stack, null, "Moon instance must have a stack");
+        notStrictEqual(singleInstance._step, null, "Moon instance must have a step");
+        notStrictEqual(singleInstance._loop, null, "Moon instance must have a loop");
+        notStrictEqual(singleInstance._direction, null, "Moon instance must have a direction");
+        instances = {};
+        instances.singleElement = Moon(Tests.targets[0]);
+        instances.nodeList = Moon(Tests.targets);
+        instances.selectorSingle = Moon("#target-1");
+        instances.selectorMulti = Moon(".target");
+        instances.arraySameType = Moon(["#target-1", "#target-2"]);
+        instances.arrayDiffType = Moon(["#target-1", Tests.targets, Tests.targets[0]]);
+        equal(instances.singleElement._collection.length, 1);
+        equal(instances.nodeList._collection.length, 5);
+        equal(instances.selectorSingle._collection.length, 1);
+        equal(instances.selectorMulti._collection.length, 5);
+        equal(instances.arraySameType._collection.length, 2);
+        return equal(instances.arrayDiffType._collection.length, 7);
+      });
     }
-  }
-};
-
-window.onload = App.init;
+  };
+  return Tests.init();
+})(window, document);

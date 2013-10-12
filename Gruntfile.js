@@ -10,7 +10,8 @@ module.exports = function(grunt) {
             compile: {
                 files: {
                     'lib/moon.js': 'src/Moon.coffee',
-                    'demo/lib/js/app.js': ['src/Moon.coffee', 'demo/src/coffee/app.coffee']
+                    'demo/lib/js/app.js': ['src/Moon.coffee', 'demo/src/coffee/app.coffee'],
+                    'tests/lib/js/tests.js': ['src/Moon.coffee', 'tests/src/coffee/tests.coffee']
                 }
             }
         },
