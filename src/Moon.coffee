@@ -175,7 +175,6 @@ do (window, document) ->
                 console.log anm.delay + " | " + anm.duration
 
                 this._paused = null
-                this._isResuming = true
 
             else
                 this._step += 1
@@ -198,9 +197,8 @@ do (window, document) ->
                 nextTimeout = setTimeout =>
 
                     # if it is paused, clear and stop
-                    if this._isResuming? 
+                    if this._paused?
                         clearTimeout(nextTimeout)
-                        this._isResuming = null
                         return undefined
 
                     # after animation function
