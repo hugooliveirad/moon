@@ -153,7 +153,6 @@ var App;
         }
         console.log(anm.delay + " | " + anm.duration);
         this._paused = null;
-        this._isResuming = true;
       } else {
         this._step += 1;
         anm = getAnm(this._step);
@@ -175,9 +174,8 @@ var App;
           }
         }
         nextTimeout = setTimeout(function() {
-          if (_this._isResuming != null) {
+          if (_this._paused != null) {
             clearTimeout(nextTimeout);
-            _this._isResuming = null;
             return void 0;
           }
           if (typeof anm.after === "function") {
@@ -260,7 +258,10 @@ var App;
       this._step = -1;
       this._stack = [];
       this._loop = 1;
-      return this._direction = true;
+      this._direction = true;
+      return this.set({
+        "transition": null
+      });
     }
   };
   return window.Moon = Moon;
