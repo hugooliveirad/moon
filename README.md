@@ -1,6 +1,6 @@
 Moon.js
 ====
-[![Build Status](https://travis-ci.org/hugobessaa/moon.png?branch=develop)](https://travis-ci.org/hugobessaa/moon)
+[![Build Status](https://travis-ci.org/hugobessaa/moon.png?branch=master)](https://travis-ci.org/hugobessaa/moon)
 
 > Powerful JavaScript animation framework that uses CSS3 transitions
 
@@ -65,6 +65,16 @@ In order to play a Moon.js animation, you must use `play()`. `play()` plays (Ohh
 The callback function will be fired at the end of each loop if you are looping with `"infinite"` or `"alternate"`.
 
 *We believe it's better to have a `play()` method instead of playing the animation right after calling the `animate()` method. With Moon, you can build your entire animation before playing it.*
+
+###pause()
+
+```javascript
+.pause();
+```
+
+If you want to pause animations, you can use `pause()` method. Unlike others JavaScript animation frameworks that uses CSS3 transitions, Moon is able to pause mid-animation.
+
+The only drawback compared to ultra-robust (and ultimately fat) animation frameworks is that Moon do not continues an easing function. So, it will play the easing from the beginning. This issue will be addressed in a future extension.
 
 ###set()
 
