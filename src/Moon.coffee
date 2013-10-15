@@ -242,6 +242,8 @@ do (window, document) ->
                 for key, value of args
                     el.style[this._getPrefix(key)] = value
 
+            return this
+
         pause: ->
             this._paused = new Date()
             for el in this._collection
@@ -252,6 +254,8 @@ do (window, document) ->
                     el.style[this._getPrefix(key)] = computedStyle.getPropertyValue(this._getCssPrefix(key))
 
                 el.style[this._getPrefix("transition")] = ""
+
+            return this
 
         # set loop
         loop: (looping) ->
@@ -268,5 +272,7 @@ do (window, document) ->
             this.set(
                 "transition": null
             )
+
+            return this
 
     window.Moon = Moon
