@@ -80,7 +80,7 @@ App =
                         Moon(tgt).animate
                             "transform": "scale(1.2) rotate(180deg)"
                             "duration": 1500
-                        .play -> 
+                        .play ->
                             alert("callback called")
                         
                     , 1
@@ -106,7 +106,7 @@ App =
                                 alert("Function called after animation")
                         .play()
                         
-                    , 1                    
+                    , 1
 
                 # stress
                 when 5

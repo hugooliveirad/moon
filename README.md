@@ -1,5 +1,6 @@
 Moon.js
 ====
+[![Build Status](https://travis-ci.org/hugobessaa/moon.png?branch=develop)](https://travis-ci.org/hugobessaa/moon)
 
 > Powerful JavaScript animation framework that uses CSS3 transitions
 

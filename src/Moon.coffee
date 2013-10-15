@@ -92,7 +92,7 @@ do (window, document) ->
         # _camelize replace callback function to return
         # just the capitalized char
         _camelizeReplaceCallback: ($1) ->
-            return $1.charAt(1).toUpperCase()            
+            return $1.charAt(1).toUpperCase()
 
         # returns the prefix of a css style in "javascript" style. Used mainly for css3
         _getCssPrefix: (prop) ->
@@ -175,7 +175,6 @@ do (window, document) ->
                 console.log anm.delay + " | " + anm.duration
 
                 this._paused = null
-                this._isResuming = true
 
             else
                 this._step += 1
@@ -198,9 +197,8 @@ do (window, document) ->
                 nextTimeout = setTimeout =>
 
                     # if it is paused, clear and stop
-                    if this._isResuming? 
+                    if this._paused?
                         clearTimeout(nextTimeout)
-                        this._isResuming = null
                         return undefined
 
                     # after animation function
@@ -244,6 +242,8 @@ do (window, document) ->
                 for key, value of args
                     el.style[this._getPrefix(key)] = value
 
+            return this
+
         pause: ->
             this._paused = new Date()
             for el in this._collection
@@ -254,6 +254,8 @@ do (window, document) ->
                     el.style[this._getPrefix(key)] = computedStyle.getPropertyValue(this._getCssPrefix(key))
 
                 el.style[this._getPrefix("transition")] = ""
+
+            return this
 
         # set loop
         loop: (looping) ->
@@ -270,5 +272,7 @@ do (window, document) ->
             this.set(
                 "transition": null
             )
+
+            return this
 
     window.Moon = Moon
