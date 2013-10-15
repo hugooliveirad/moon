@@ -151,7 +151,6 @@
         }
         console.log(anm.delay + " | " + anm.duration);
         this._paused = null;
-        this._isResuming = true;
       } else {
         this._step += 1;
         anm = getAnm(this._step);
@@ -173,9 +172,8 @@
           }
         }
         nextTimeout = setTimeout(function() {
-          if (_this._isResuming != null) {
+          if (_this._paused != null) {
             clearTimeout(nextTimeout);
-            _this._isResuming = null;
             return void 0;
           }
           if (typeof anm.after === "function") {
@@ -212,28 +210,21 @@
       return this;
     },
     set: function(args) {
-      var el, key, value, _i, _len, _ref, _results;
+      var el, key, value, _i, _len, _ref;
       _ref = this._collection;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         el = _ref[_i];
-        _results.push((function() {
-          var _results1;
-          _results1 = [];
-          for (key in args) {
-            value = args[key];
-            _results1.push(el.style[this._getPrefix(key)] = value);
-          }
-          return _results1;
-        }).call(this));
+        for (key in args) {
+          value = args[key];
+          el.style[this._getPrefix(key)] = value;
+        }
       }
-      return _results;
+      return this;
     },
     pause: function() {
-      var computedStyle, el, key, prop, _i, _len, _ref, _ref1, _results;
+      var computedStyle, el, key, prop, _i, _len, _ref, _ref1;
       this._paused = new Date();
       _ref = this._collection;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         el = _ref[_i];
         computedStyle = window.getComputedStyle(el);
@@ -245,9 +236,9 @@
           }
           el.style[this._getPrefix(key)] = computedStyle.getPropertyValue(this._getCssPrefix(key));
         }
-        _results.push(el.style[this._getPrefix("transition")] = "");
+        el.style[this._getPrefix("transition")] = "";
       }
-      return _results;
+      return this;
     },
     loop: function(looping) {
       this._loop = looping;
@@ -259,9 +250,10 @@
       this._stack = [];
       this._loop = 1;
       this._direction = true;
-      return this.set({
+      this.set({
         "transition": null
       });
+      return this;
     }
   };
   return window.Moon = Moon;
@@ -275,7 +267,7 @@
       return Tests.test();
     },
     test: function() {
-      return test("Test Moon main function", function() {
+      test("Moon main function", function() {
         var instances, singleInstance;
         singleInstance = Moon("#target");
         ok(singleInstance instanceof Moon, "Moon should return a instance of itself");
@@ -292,12 +284,147 @@
         instances.selectorMulti = Moon(".target");
         instances.arraySameType = Moon(["#target-1", "#target-2"]);
         instances.arrayDiffType = Moon(["#target-1", Tests.targets, Tests.targets[0]]);
-        equal(instances.singleElement._collection.length, 1);
-        equal(instances.nodeList._collection.length, 5);
-        equal(instances.selectorSingle._collection.length, 1);
-        equal(instances.selectorMulti._collection.length, 5);
-        equal(instances.arraySameType._collection.length, 2);
-        return equal(instances.arrayDiffType._collection.length, 7);
+        equal(instances.singleElement._collection.length, 1, "Expected 1");
+        equal(instances.nodeList._collection.length, 5, "Expected 5");
+        equal(instances.selectorSingle._collection.length, 1, "Expected 1");
+        equal(instances.selectorMulti._collection.length, 5, "Expected 5");
+        equal(instances.arraySameType._collection.length, 2, "Expected 2");
+        return equal(instances.arrayDiffType._collection.length, 7, "Expected 7");
+      });
+      test("Moon _camelize method", function() {
+        var testingCamelize;
+        testingCamelize = Moon.fn._camelize("webkit-animation-timing-function");
+        return strictEqual(testingCamelize, "webkitAnimationTimingFunction", "should return camelized property");
+      });
+      test("Moon _getPrefix method", function() {
+        var testingPrefix;
+        testingPrefix = Moon.fn._getPrefix("animation-timing-function");
+        return notStrictEqual(document.documentElement.style[testingPrefix], null, "should return a valid property");
+      });
+      test("Moon _getCssPrefix method", function() {
+        var testignCssPrefix, testignCssPrefixCamelized;
+        testignCssPrefix = Moon.fn._getCssPrefix("animation-timing-function");
+        testignCssPrefixCamelized = Moon.fn._camelize(testignCssPrefix);
+        notStrictEqual(document.documentElement.style[testignCssPrefixCamelized], null, "should return a valid CSS property");
+        notStrictEqual(testignCssPrefix.indexOf("-"), -1, "should return hyphen-divided property");
+        return strictEqual(testignCssPrefix, testignCssPrefix.toLowerCase(), "should return lower-case property");
+      });
+      test("Moon animate method", function() {
+        var myAnimation;
+        myAnimation = Moon("#target-1").animate({
+          "opacity": "0",
+          "duration": 100,
+          "easing": "ease-in-out"
+        }).animate({
+          "opacity": "1"
+        });
+        notEqual(myAnimation._stack[0], null, "animation stack should be declared");
+        strictEqual(myAnimation._stack[0].opacity, "0", "animation property should be the declared");
+        strictEqual(myAnimation._stack[0].duration, 100, "animation property should be the declared");
+        strictEqual(myAnimation._stack[0].easing, "ease-in-out", "animation property should be the declared");
+        strictEqual(myAnimation._stack[0].delay, Moon.fn.config.delay, "animation property should be the default");
+        strictEqual(myAnimation._stack[0].before, Moon.fn.config.before, "animation property should be the default");
+        strictEqual(myAnimation._stack[0].after, Moon.fn.config.after, "animation property should be the default");
+        strictEqual(myAnimation._stack[1].opacity, "1", "animation chaining should change the declared properties");
+        return notStrictEqual(myAnimation._stack[1].opacity, myAnimation._stack[0].opacity, "animation chaining should independently change properties");
+      });
+      asyncTest("Moon play", function() {
+        var callback, counter, myAnimation;
+        expect(2);
+        counter = 0;
+        callback = function() {
+          return counter += 1;
+        };
+        myAnimation = Moon("#target-1").animate({
+          "opacity": "0",
+          "duration": 0
+        }).play(callback);
+        strictEqual(myAnimation._callback, callback, "animation callback should be the declared");
+        return setTimeout(function() {
+          strictEqual(counter, 1, "animation callback should run once");
+          return start();
+        }, 5);
+      });
+      test("Moon set", function() {
+        var myAnimation;
+        myAnimation = Moon("#target-1").set({
+          "opacity": "0"
+        });
+        return equal(myAnimation._collection[0].style.opacity, "0", "set should set the property");
+      });
+      asyncTest("Moon pause", function() {
+        var afterStep, midStep, myAnimation;
+        expect(2);
+        myAnimation = Moon("#target-1").animate({
+          "opacity": "0",
+          "duration": 500
+        }).animate({
+          "opacity": "1",
+          "duration": 500
+        }).play();
+        setTimeout(function() {
+          return myAnimation.pause();
+        }, 300);
+        midStep = void 0;
+        afterStep = void 0;
+        return setTimeout(function() {
+          midStep = myAnimation._step;
+          myAnimation.play();
+          return setTimeout(function() {
+            afterStep = myAnimation._step;
+            strictEqual(midStep, 0, "should have paused at the first step");
+            strictEqual(afterStep, 1, "should have played the second step");
+            return start();
+          }, 400);
+        }, 600);
+      });
+      return asyncTest("Moon loop", function() {
+        var looping, loopingVars;
+        expect(8);
+        looping = [];
+        looping[0] = Moon("#target-1").animate({
+          "opacity": "0",
+          "duration": 500
+        }).animate({
+          "opacity": "1",
+          "duration": 500
+        }).loop(2).play();
+        looping[1] = Moon("#target-2").animate({
+          "opacity": "0",
+          "duration": 500
+        }).animate({
+          "opacity": "1",
+          "duration": 500
+        }).loop("infinite").play();
+        looping[2] = Moon("#target-3").animate({
+          "opacity": "0",
+          "duration": 500
+        }).animate({
+          "opacity": "1",
+          "duration": 500
+        }).loop("alternate").play();
+        loopingVars = [];
+        setTimeout(function() {
+          loopingVars.push(looping[0]._step);
+          loopingVars.push(looping[1]._step);
+          loopingVars.push(looping[2]._step);
+          return loopingVars.push(looping[2]._direction);
+        }, 1100);
+        return setTimeout(function() {
+          loopingVars.push(looping[0]._step);
+          loopingVars.push(looping[1]._step);
+          loopingVars.push(looping[2]._step);
+          loopingVars.push(looping[2]._direction);
+          strictEqual(loopingVars[0], 0, "count looping step at second iteraction expected to be 0");
+          strictEqual(loopingVars[1], 0, "infinite looping step at second iteraction expected to be 0");
+          strictEqual(loopingVars[2], 0, "alternate looping step at second iteraction expected to be 0");
+          strictEqual(loopingVars[3], false, "alternate looping direction at second iteraction expected to be false");
+          strictEqual(loopingVars[4], -1, "count looping step at third iteraction expected to be -1");
+          strictEqual(loopingVars[5], 0, "infinite looping step at third iteraction expected to be 0");
+          strictEqual(loopingVars[6], 0, "alternate looping step at third iteraction expected to be 0");
+          strictEqual(loopingVars[7], true, "alternate looping direction at third iteraction expected to be true");
+          return start();
+        }, 2100);
       });
     }
   };
