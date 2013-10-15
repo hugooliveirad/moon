@@ -92,7 +92,7 @@ do (window, document) ->
         # _camelize replace callback function to return
         # just the capitalized char
         _camelizeReplaceCallback: ($1) ->
-            return $1.charAt(1).toUpperCase()            
+            return $1.charAt(1).toUpperCase()
 
         # returns the prefix of a css style in "javascript" style. Used mainly for css3
         _getCssPrefix: (prop) ->

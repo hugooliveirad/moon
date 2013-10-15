@@ -15,7 +15,7 @@ module.exports = function(grunt) {
                 }
             }
         },
-         sass: {
+        sass: {
             compile: {
                 options: {
                    style: 'expanded'
@@ -38,6 +38,24 @@ module.exports = function(grunt) {
 		qunit: {
 			all: ['tests/**/*.html']
 		},
+        coffeelint: {
+            options: {
+                arrow_spacing: {
+                    level: 'error'
+                },
+                indentation: {
+                    value: 4,
+                    level: 'error'
+                },
+                max_line_length: {
+                    level: 'ignore'
+                },
+                no_empty_param_list: {
+                    level: 'error'
+                }
+            },
+            app: ['demo/**/*.coffee', 'src/**/*.coffee', 'tests/**/*.coffee']
+        },
         watch: {
             scripts: {
                 files: ['**/*.coffee'],
@@ -54,10 +72,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-coffeelint');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('compile', ['coffee', 'sass']);
     grunt.registerTask('test', ['compile', 'qunit:all']);
-    grunt.registerTask('prepare', ['test', 'uglify'])
+    grunt.registerTask('prepare', ['test', 'uglify']);
+
+    grunt.registerTask('travis', ['qunit', 'coffeelint']);
 
 };
