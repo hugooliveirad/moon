@@ -194,12 +194,7 @@ do (window, document) ->
                         el.style[this._getPrefix(key)] = value
                 
                 # timer to continue animation
-                nextTimeout = setTimeout =>
-
-                    # if it is paused, clear and stop
-                    if this._paused?
-                        clearTimeout(nextTimeout)
-                        return undefined
+                this._nextTimeout = setTimeout =>
 
                     # after animation function
                     anm.after() if typeof anm.after == "function"
@@ -207,7 +202,7 @@ do (window, document) ->
                     # continue chained animations
                     @._play()
 
-                    clearTimeout(nextTimeout)
+                    clearTimeout(@._nextTimeout)
                 , anm.delay + anm.duration
 
                 this._lastTimePlayed = new Date()
@@ -254,6 +249,8 @@ do (window, document) ->
                     el.style[this._getPrefix(key)] = computedStyle.getPropertyValue(this._getCssPrefix(key))
 
                 el.style[this._getPrefix("transition")] = ""
+
+            clearTimeout(this._nextTimeout)
 
             return this
 
