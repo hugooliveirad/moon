@@ -12,7 +12,6 @@ do (window, document) ->
         this._callback = undefined
         this._stack = []
         this._step = -1
-        this._prefixes = {}
         this._loop = 1
         this._direction = true
 
