@@ -161,8 +161,6 @@ do (window, document) ->
                 auxDelay = totalTime - timeDiff - anm.duration
                 auxDuration = totalTime - timeDiff
 
-                console.log (auxDelay + " | " + auxDuration)
-
                 if auxDelay < 0
                     anm.delay = 0
                 else
@@ -170,8 +168,6 @@ do (window, document) ->
 
                 if auxDuration < anm.duration
                     anm.duration = auxDuration
-
-                console.log anm.delay + " | " + anm.duration
 
                 this._paused = null
 
