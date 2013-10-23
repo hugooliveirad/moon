@@ -64,10 +64,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-coffeelint');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('test', ['compile', 'qunit:all']);
-    grunt.registerTask('prepare', ['test', 'uglify']);
     grunt.registerTask('compile', ['coffee']);
+    grunt.registerTask('test', ['coffeelint', 'compile', 'qunit:all']);
+    grunt.registerTask('build', ['test', 'uglify']);
 
-    grunt.registerTask('travis', ['qunit', 'coffeelint']);
+    grunt.registerTask('travis', ['test']);
 
 };
