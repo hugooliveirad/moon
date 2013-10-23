@@ -116,27 +116,24 @@ do(window, document) ->
                     "duration": 500
                 ).play()
 
+                steps = []
+
                 setTimeout( ->
                     myAnimation.pause()
-                , 300)
 
-                midStep = undefined
-                afterStep = undefined
-                setTimeout ->
-                    # paused at the first step
-                    midStep = myAnimation._step
-                    myAnimation.play()
+
                     setTimeout( ->
-                        # playing the second step
-                        afterStep = myAnimation._step
+                        steps.push(myAnimation._step)
+                        myAnimation.play()
 
-                        strictEqual(midStep, 0, "should have paused at the first step")
-                        strictEqual(afterStep, 1, "should have played the second step")
-                        start()
-                    , 400)
-                , 600
-
-                
+                        setTimeout( ->    
+                            steps.push(myAnimation._step)
+                            strictEqual(steps[0], 0, "step should remain the same after pause")
+                            strictEqual(steps[1], 1, "animation should continue after used play")
+                            start()
+                        , 300)
+                    , 300)
+                , 300)
 
             )
 
