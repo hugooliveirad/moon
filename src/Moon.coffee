@@ -152,7 +152,7 @@ do (window, document) ->
                 return this._stack[step]
 
             anm = undefined
-            # if is paused, we need to recaulate delay and duration
+            # if is paused, we need to recalculate delay and duration
             if this._paused?
                 anm = getAnm(this._step)
 
@@ -194,20 +194,16 @@ do (window, document) ->
                         el.style[this._getPrefix(key)] = value
                 
                 # timer to continue animation
-                nextTimeout = setTimeout =>
-
-                    # if it is paused, clear and stop
-                    if this._paused?
-                        clearTimeout(nextTimeout)
-                        return undefined
-
+                this._nextTimeout = setTimeout =>
+                    clearTimeout(@._nextTimeout)
+                    
                     # after animation function
                     anm.after() if typeof anm.after == "function"
 
                     # continue chained animations
                     @._play()
 
-                    clearTimeout(nextTimeout)
+                    
                 , anm.delay + anm.duration
 
                 this._lastTimePlayed = new Date()
@@ -254,6 +250,8 @@ do (window, document) ->
                     el.style[this._getPrefix(key)] = computedStyle.getPropertyValue(this._getCssPrefix(key))
 
                 el.style[this._getPrefix("transition")] = ""
+
+            clearTimeout(this._nextTimeout)
 
             return this
 
