@@ -15,16 +15,6 @@ module.exports = function(grunt) {
                 }
             }
         },
-        sass: {
-            compile: {
-                options: {
-                   style: 'expanded'
-                },
-                files: {
-                    'demo/lib/css/main.css': 'demo/src/scss/main.scss',
-                }
-            }
-        },
         uglify: {
             options: {
                 mangle: true
@@ -69,15 +59,14 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-coffee');
-    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-coffeelint');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('compile', ['coffee', 'sass']);
     grunt.registerTask('test', ['compile', 'qunit:all']);
     grunt.registerTask('prepare', ['test', 'uglify']);
+    grunt.registerTask('compile', ['coffee']);
 
     grunt.registerTask('travis', ['qunit', 'coffeelint']);
 
