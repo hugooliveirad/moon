@@ -152,7 +152,7 @@ do (window, document) ->
                 return this._stack[step]
 
             anm = undefined
-            # if is paused, we need to recaulate delay and duration
+            # if is paused, we need to recalculate delay and duration
             if this._paused?
                 anm = getAnm(this._step)
 
@@ -195,14 +195,15 @@ do (window, document) ->
                 
                 # timer to continue animation
                 this._nextTimeout = setTimeout =>
-
+                    clearTimeout(@._nextTimeout)
+                    
                     # after animation function
                     anm.after() if typeof anm.after == "function"
 
                     # continue chained animations
                     @._play()
 
-                    clearTimeout(@._nextTimeout)
+                    
                 , anm.delay + anm.duration
 
                 this._lastTimePlayed = new Date()
