@@ -126,7 +126,7 @@ do(window, document) ->
                         steps.push(myAnimation._step)
                         myAnimation.play()
 
-                        setTimeout( ->    
+                        setTimeout( ->
                             steps.push(myAnimation._step)
                             strictEqual(steps[0], 0, "step should remain the same after pause")
                             strictEqual(steps[1], 1, "animation should continue after used play")
