@@ -13,6 +13,7 @@ module.exports = (grunt) ->
         uglify:
             options:
                 mangle: true
+                report: 'gzip'
             
             my_target:
                 files:
