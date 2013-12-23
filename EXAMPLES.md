@@ -35,7 +35,7 @@ Moon(["#selector", document.querySelectorAll(".selector")]).animate({
 }).play();
 ```
 
-##Animation with callback:
+##Animation with callback
 
 ```javascript
 Moon("#selector").animate({

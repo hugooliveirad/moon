@@ -8,7 +8,6 @@
     this._callback = void 0;
     this._stack = [];
     this._step = -1;
-    this._prefixes = {};
     this._loop = 1;
     this._direction = true;
     return this;
@@ -125,7 +124,7 @@
       return this;
     },
     _play: function() {
-      var anm, auxDelay, auxDuration, el, getAnm, key, nextTimeout, timeDiff, totalTime, value, _i, _len, _ref,
+      var anm, auxDelay, auxDuration, el, getAnm, key, timeDiff, totalTime, value, _i, _len, _ref,
         _this = this;
       getAnm = function(step) {
         if (!_this._direction) {
@@ -140,7 +139,6 @@
         totalTime = anm.delay + anm.duration;
         auxDelay = totalTime - timeDiff - anm.duration;
         auxDuration = totalTime - timeDiff;
-        console.log(auxDelay + " | " + auxDuration);
         if (auxDelay < 0) {
           anm.delay = 0;
         } else {
@@ -149,7 +147,6 @@
         if (auxDuration < anm.duration) {
           anm.duration = auxDuration;
         }
-        console.log(anm.delay + " | " + anm.duration);
         this._paused = null;
       } else {
         this._step += 1;
@@ -171,16 +168,12 @@
             el.style[this._getPrefix(key)] = value;
           }
         }
-        nextTimeout = setTimeout(function() {
-          if (_this._paused != null) {
-            clearTimeout(nextTimeout);
-            return void 0;
-          }
+        this._nextTimeout = setTimeout(function() {
+          clearTimeout(_this._nextTimeout);
           if (typeof anm.after === "function") {
             anm.after();
           }
-          _this._play();
-          return clearTimeout(nextTimeout);
+          return _this._play();
         }, anm.delay + anm.duration);
         this._lastTimePlayed = new Date();
       } else {
@@ -238,6 +231,7 @@
         }
         el.style[this._getPrefix("transition")] = "";
       }
+      clearTimeout(this._nextTimeout);
       return this;
     },
     loop: function(looping) {
@@ -353,7 +347,7 @@
         return equal(myAnimation._collection[0].style.opacity, "0", "set should set the property");
       });
       asyncTest("Moon pause", function() {
-        var afterStep, midStep, myAnimation;
+        var myAnimation, steps;
         expect(2);
         myAnimation = Moon("#target-1").animate({
           "opacity": "0",
@@ -362,21 +356,20 @@
           "opacity": "1",
           "duration": 500
         }).play();
-        setTimeout(function() {
-          return myAnimation.pause();
-        }, 300);
-        midStep = void 0;
-        afterStep = void 0;
+        steps = [];
         return setTimeout(function() {
-          midStep = myAnimation._step;
-          myAnimation.play();
+          myAnimation.pause();
           return setTimeout(function() {
-            afterStep = myAnimation._step;
-            strictEqual(midStep, 0, "should have paused at the first step");
-            strictEqual(afterStep, 1, "should have played the second step");
-            return start();
-          }, 400);
-        }, 600);
+            steps.push(myAnimation._step);
+            myAnimation.play();
+            return setTimeout(function() {
+              steps.push(myAnimation._step);
+              strictEqual(steps[0], 0, "step should remain the same after pause");
+              strictEqual(steps[1], 1, "animation should continue after used play");
+              return start();
+            }, 300);
+          }, 300);
+        }, 300);
       });
       return asyncTest("Moon loop", function() {
         var looping, loopingVars;

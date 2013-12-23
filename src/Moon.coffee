@@ -12,7 +12,6 @@ do (window, document) ->
         this._callback = undefined
         this._stack = []
         this._step = -1
-        this._prefixes = {}
         this._loop = 1
         this._direction = true
 
@@ -152,7 +151,7 @@ do (window, document) ->
                 return this._stack[step]
 
             anm = undefined
-            # if is paused, we need to recaulate delay and duration
+            # if is paused, we need to recalculate delay and duration
             if this._paused?
                 anm = getAnm(this._step)
 
@@ -162,8 +161,6 @@ do (window, document) ->
                 auxDelay = totalTime - timeDiff - anm.duration
                 auxDuration = totalTime - timeDiff
 
-                console.log (auxDelay + " | " + auxDuration)
-
                 if auxDelay < 0
                     anm.delay = 0
                 else
@@ -171,8 +168,6 @@ do (window, document) ->
 
                 if auxDuration < anm.duration
                     anm.duration = auxDuration
-
-                console.log anm.delay + " | " + anm.duration
 
                 this._paused = null
 
@@ -194,20 +189,16 @@ do (window, document) ->
                         el.style[this._getPrefix(key)] = value
                 
                 # timer to continue animation
-                nextTimeout = setTimeout =>
-
-                    # if it is paused, clear and stop
-                    if this._paused?
-                        clearTimeout(nextTimeout)
-                        return undefined
-
+                this._nextTimeout = setTimeout =>
+                    clearTimeout(@._nextTimeout)
+                    
                     # after animation function
                     anm.after() if typeof anm.after == "function"
 
                     # continue chained animations
                     @._play()
 
-                    clearTimeout(nextTimeout)
+                    
                 , anm.delay + anm.duration
 
                 this._lastTimePlayed = new Date()
@@ -254,6 +245,8 @@ do (window, document) ->
                     el.style[this._getPrefix(key)] = computedStyle.getPropertyValue(this._getCssPrefix(key))
 
                 el.style[this._getPrefix("transition")] = ""
+
+            clearTimeout(this._nextTimeout)
 
             return this
 
