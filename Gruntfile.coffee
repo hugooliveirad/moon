@@ -60,5 +60,6 @@ module.exports = (grunt) ->
     grunt.registerTask('compile', ['coffee'])
     grunt.registerTask('test', ['coffeelint', 'compile', 'qunit:all'])
     grunt.registerTask('build', ['test', 'uglify'])
+    grunt.registerTask('default', ['watch:scripts'])
 
     grunt.registerTask('travis', ['test'])
