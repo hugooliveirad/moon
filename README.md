@@ -2,6 +2,10 @@ Moon.js [![Build Status](https://travis-ci.org/hugobessaa/moon.png?branch=master
 ====
 > Powerful JavaScript animation framework that uses CSS3 transitions
 
+## Notice
+
+This was an experimental project. Not even close to be production ready. Learned a lot with it and so can you! I'll be happy to aswer anything, but no real support should be expected.
+
 ## How to use
 
 Moon is a simple JavaScript animation framework that uses CSS3 transitions to provide smooth animations. It has no dependencies and weights less than a KB when minified and gziped. To use it, just [download it](https://raw.github.com/hugobessaa/moon/master/lib/moon.min.js) and include it before your scripts.
